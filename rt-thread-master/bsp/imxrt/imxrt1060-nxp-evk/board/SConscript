@@ -1,0 +1,29 @@
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+src = Split("""
+board.c
+MCUX_Config/clock_config.c
+MCUX_Config/pin_mux.c
+""")
+
+CPPPATH = [cwd,cwd + '/MCUX_Config',cwd + '/xip',cwd+'/ports']
+CPPDEFINES = ['CPU_MIMXRT1062DVL6A','XIP_EXTERNAL_FLASH=1','XIP_BOOT_HEADER_ENABLE=1']
+
+group = DefineGroup('Drivers', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES)
+
+src2  = Split('''
+            xip/evkmimxrt1060_flexspi_nor_config.c
+            xip/evkmimxrt1060_sdram_ini_dcd.c
+            ''')
+group = DefineGroup('xip', src2, depend = [''], CPPPATH = [''])
+
+src3  = Split('''
+            doc/Readme.c
+            doc/ReleaseNote.c
+            ''')
+group = DefineGroup('Doc', src3, depend = [''], CPPPATH = [''])
+
+Return('group')
