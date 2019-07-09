@@ -41,25 +41,9 @@ void app_create(void)
 
 static int temp[10] = {0};
 
-extern int Image$$RW_m_ncache$$Length;
-extern int Image$$RW_m_ncache$$ZI$$Length;
-#define NCACHE_LENGTH          		(&Image$$RW_m_ncache$$Length)
-#define NCACHE_ZI_LENGTH            (&Image$$RW_m_ncache$$ZI$$Length)
-
-
-extern int Image$$RTT_HEAP$$ZI$$Base;
-extern int Image$$RTT_HEAP$$ZI$$Limit;
-#define HEAP_BEGIN          (&Image$$RTT_HEAP$$ZI$$Base)
-#define HEAP_END            (&Image$$RTT_HEAP$$ZI$$Limit)
 
 int main(void)
 {
-	temp[0] = (rt_uint32_t)NCACHE_LENGTH; // Image$$region_name$$Length 
-	temp[1] = (rt_uint32_t)NCACHE_ZI_LENGTH;
-	temp[2] = (rt_uint32_t)NCACHE_LENGTH + (rt_uint32_t)NCACHE_ZI_LENGTH;
-	temp[3] = (rt_uint32_t)HEAP_BEGIN;
-	temp[4] = (rt_uint32_t)HEAP_END;
-	
 	/* application create */
 	app_create();
 
