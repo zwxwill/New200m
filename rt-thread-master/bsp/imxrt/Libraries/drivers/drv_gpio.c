@@ -294,7 +294,7 @@ void GPIO2_Combined_0_15_IRQHandler(void)
     rt_interrupt_leave();
 }
 
-
+/*  this pin irq is used by sd card, function: SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLER() in fsl_sdmmc_host.c
 void GPIO2_Combined_16_31_IRQHandler(void)
 {
     rt_interrupt_enter();
@@ -303,6 +303,7 @@ void GPIO2_Combined_16_31_IRQHandler(void)
 
     rt_interrupt_leave();
 }
+*/
 
 /* GPIO3 index offset is 64 */
 void GPIO3_Combined_0_15_IRQHandler(void)
@@ -594,7 +595,7 @@ int rt_hw_pin_init(void)
     int ret = RT_EOK;
 
     ret = rt_device_pin_register("pin", &imxrt_pin_ops, RT_NULL);
-	LOG_D("pin init success.");
+	LOG_D("pin init success.\n");
 
     return ret;
 }

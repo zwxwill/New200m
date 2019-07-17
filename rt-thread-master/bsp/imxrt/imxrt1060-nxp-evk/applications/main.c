@@ -32,18 +32,16 @@ void app_create(void)
     tid = rt_thread_create("app_sd",   /* thread name */
                             app_sd,    /* thread entry */
 	                        (void*)0,   /* thread parameter */
-							512,        /* thread stack size : byte */
+							1024,        /* thread stack size : byte */
                             RT_THREAD_PRIORITY_MAX - 3, /* thread priority : 0 is the max high priority */
 							5); /* thread tick : when thread priority is same */
     if (tid != RT_NULL)
-        rt_thread_startup(tid);			
+        rt_thread_startup(tid);	
 }
-
-static int temp[10] = {0};
-
 
 int main(void)
 {
+	rt_uint32_t result;
 	/* application create */
 	app_create();
 

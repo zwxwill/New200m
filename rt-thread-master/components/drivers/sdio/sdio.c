@@ -574,7 +574,7 @@ static rt_int32_t sdio_read_cis(struct rt_sdio_function *func)
         case CISTPL_MANFID:
             if (tpl_link < 4)
             {
-                LOG_D("bad CISTPL_MANFID length");
+                LOG_D("bad CISTPL_MANFID length\n");
                 break;
             }
             if (func->num != 0)
@@ -601,14 +601,14 @@ static rt_int32_t sdio_read_cis(struct rt_sdio_function *func)
             if (ret)
             {
                 LOG_D("bad CISTPL_FUNCE size %u "
-                       "type %u", tpl_link, curr->data[0]);
+                       "type %u\n", tpl_link, curr->data[0]);
             }
 
             break;
         case CISTPL_VERS_1:
             if (tpl_link < 2)
             {
-                LOG_D("CISTPL_VERS_1 too short");
+                LOG_D("CISTPL_VERS_1 too short\n");
             }
             break;
         default: 
@@ -618,7 +618,7 @@ static rt_int32_t sdio_read_cis(struct rt_sdio_function *func)
             curr->size = tpl_link;
             *prev = curr;
             prev = &curr->next;
-            LOG_D( "function %d, CIS tuple code %#x, length %d",
+            LOG_D( "function %d, CIS tuple code %#x, length %d\n",
                 func->num, tpl_code, tpl_link);
             break;
         }

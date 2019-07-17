@@ -69,15 +69,15 @@ static int serial_fops_open(struct dfs_fd *fd)
     switch (fd->flags & O_ACCMODE)
     {
     case O_RDONLY:
-        LOG_D("fops open: O_RDONLY!");
+        LOG_D("fops open: O_RDONLY!\n");
         flags = RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_RDONLY;
         break;
     case O_WRONLY:
-        LOG_D("fops open: O_WRONLY!");
+        LOG_D("fops open: O_WRONLY!\n");
         flags = RT_DEVICE_FLAG_WRONLY;
         break;
     case O_RDWR:
-        LOG_D("fops open: O_RDWR!");
+        LOG_D("fops open: O_RDWR!\n");
         flags = RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_RDWR;
         break;
     default:
@@ -562,7 +562,7 @@ static rt_err_t rt_serial_open(struct rt_device *dev, rt_uint16_t oflag)
     RT_ASSERT(dev != RT_NULL);
     serial = (struct rt_serial_device *)dev;
 
-    LOG_D("open serial device: 0x%08x with open flag: 0x%04x",
+    LOG_D("open serial device: 0x%08x with open flag: 0x%04x\n",
         dev, oflag);
     /* check device flag with the open flag */
     if ((oflag & RT_DEVICE_FLAG_DMA_RX) && !(dev->flag & RT_DEVICE_FLAG_DMA_RX))

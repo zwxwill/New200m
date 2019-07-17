@@ -8,6 +8,7 @@
 
 #include "fsl_sdmmc_event.h"
 #include "fsl_sdmmc_host.h"
+#include <rtthread.h>
 
 /*******************************************************************************
  * Definitions
@@ -167,7 +168,14 @@ static status_t SDMMCHOST_TransferFunction(SDMMCHOST_TYPE *base, SDMMCHOST_TRANS
     status_t error = kStatus_Success;
 
     usdhc_adma_config_t dmaConfig;
-
+#if 0
+	rt_kprintf("cmd->cmd_code: %02d, cmd->arg: %08x -->", content->command->index, content->command->argument);
+	if(content->data)
+	{
+		rt_kprintf(" blksize:%d, blks:%d ", content->data->blockSize, content->data->blockCount);
+	}
+	
+#endif
     if (content->data != NULL)
     {
         memset(&dmaConfig, 0, sizeof(usdhc_adma_config_t));
@@ -202,7 +210,19 @@ static status_t SDMMCHOST_TransferFunction(SDMMCHOST_TYPE *base, SDMMCHOST_TRANS
             SDMMCHOST_ErrorRecovery(base);
         }
     }
-
+	
+#if 0
+	if(content->command->responseType == kCARD_ResponseTypeR2)
+	{
+        rt_kprintf(" resp 0x%08X 0x%08X 0x%08X 0x%08X\n",
+                  content->command->response[0], content->command->response[1], 
+		          content->command->response[2], content->command->response[3]);		
+	}
+	else
+	{
+        rt_kprintf(" resp 0x%08X\n", content->command->response[0]);	
+	}
+#endif
     return error;
 }
 
@@ -296,6 +316,8 @@ void SDMMCHOST_Delay(uint32_t milliseconds)
 
 void SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLER(void)
 {
+	rt_interrupt_enter();
+	
     if (SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_STATUS() & (1U << BOARD_USDHC_CD_GPIO_PIN))
     {
         SDMMCHOST_NofiyCardInsertStatus((SDMMCHOST_CARD_DETECT_GPIO_STATUS() == SDMMCHOST_CARD_INSERT_CD_LEVEL),
@@ -304,6 +326,8 @@ void SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLER(void)
     /* Clear interrupt flag.*/
     SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_STATUS_CLEAR(~0U);
     SDMMCEVENT_Notify(kSDMMCEVENT_CardDetect);
+	
+	rt_interrupt_leave();
 }
 
 status_t SDMMCHOST_WaitCardDetectStatus(SDMMCHOST_TYPE *base, const sdmmchost_detect_card_t *cd, bool waitCardStatus)

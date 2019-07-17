@@ -20,6 +20,8 @@
 extern "C" {
 #endif
 
+//#define RT_MMCSD_DBG	
+	
 #ifdef RT_MMCSD_DBG
 #define mmcsd_dbg(fmt, ...)  rt_kprintf(fmt, ##__VA_ARGS__)
 #else

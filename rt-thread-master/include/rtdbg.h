@@ -23,8 +23,8 @@
  * #include <rtdbg.h>          // must after of DBG_LVL, DBG_TAG or other options
  *
  * Then in your C/C++ file, you can use LOG_X macro to print out logs:
- * LOG_D("this is a debug log!");
- * LOG_E("this is a error log!");
+ * LOG_D("this is a debug log!\n");
+ * LOG_E("this is a error log!\n");
  */
 
 #ifndef RT_DBG_H__
@@ -93,13 +93,13 @@
 #define _DBG_LOG_HDR(lvl_name, color_n)                    \
     rt_kprintf("\033["#color_n"m["lvl_name"/"DBG_SECTION_NAME"] ")
 #define _DBG_LOG_X_END                                     \
-    rt_kprintf("\033[0m\n")
+    rt_kprintf("\033[0m")
 #else
 #define _DBG_COLOR(n)
 #define _DBG_LOG_HDR(lvl_name, color_n)                    \
     rt_kprintf("["lvl_name"/"DBG_SECTION_NAME"] ")
 #define _DBG_LOG_X_END                                     \
-    rt_kprintf("\n")
+    rt_kprintf("")
 #endif /* DBG_COLOR */
 
 /*

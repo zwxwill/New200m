@@ -30,12 +30,12 @@ int rt_hw_rng_Init(void)
     status = TRNG_Init(TRNG, &trngConfig);
     if (kStatus_Success != status)
 	{
-        LOG_E("RNG init failed!");
+        LOG_E("RNG init failed!\n");
         result = -RT_ERROR;		
 	}
 	else
 	{
-		LOG_D("RNG init success.");
+		LOG_D("RNG init success.\n");
 	}
 	return result;
 }

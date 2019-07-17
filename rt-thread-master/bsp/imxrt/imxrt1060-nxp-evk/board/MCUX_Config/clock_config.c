@@ -90,7 +90,7 @@ outputs:
 - {id: SPDIF0_CLK_ROOT.outFreq, value: 30 MHz}
 - {id: TRACE_CLK_ROOT.outFreq, value: 352/3 MHz}
 - {id: UART_CLK_ROOT.outFreq, value: 80 MHz}
-- {id: USDHC1_CLK_ROOT.outFreq, value: 176 MHz}
+- {id: USDHC1_CLK_ROOT.outFreq, value: 198 MHz}
 - {id: USDHC2_CLK_ROOT.outFreq, value: 198 MHz}
 settings:
 - {id: CCM.FLEXSPI_PODF.scale, value: '1', locked: true}
@@ -99,7 +99,6 @@ settings:
 - {id: CCM.PERCLK_PODF.scale, value: '2'}
 - {id: CCM.SEMC_PODF.scale, value: '8'}
 - {id: CCM.TRACE_PODF.scale, value: '3', locked: true}
-- {id: CCM.USDHC1_CLK_SEL.sel, value: CCM_ANALOG.PLL2_PFD0_CLK}
 - {id: CCM_ANALOG.PLL1_BYPASS.sel, value: CCM_ANALOG.PLL1}
 - {id: CCM_ANALOG.PLL1_VDIV.scale, value: '50'}
 - {id: CCM_ANALOG.PLL2.denom, value: '1'}
@@ -208,7 +207,7 @@ void BOARD_BootClockRUN(void)
     /* Set USDHC1_PODF. */
     CLOCK_SetDiv(kCLOCK_Usdhc1Div, 1);
     /* Set Usdhc1 clock source. */
-    CLOCK_SetMux(kCLOCK_Usdhc1Mux, 1);
+    CLOCK_SetMux(kCLOCK_Usdhc1Mux, 0);
     /* Disable USDHC2 clock gate. */
     CLOCK_DisableClock(kCLOCK_Usdhc2);
     /* Set USDHC2_PODF. */

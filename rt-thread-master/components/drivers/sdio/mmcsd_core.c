@@ -41,6 +41,8 @@ static rt_uint32_t mmcsd_detect_mb_pool[4];
 static struct rt_mailbox mmcsd_hotpluge_mb;
 static rt_uint32_t mmcsd_hotpluge_mb_pool[4];
 
+
+
 void mmcsd_host_lock(struct rt_mmcsd_host *host)
 {
     rt_mutex_take(&host->bus_lock, RT_WAITING_FOREVER);
@@ -106,7 +108,7 @@ rt_int32_t mmcsd_go_idle(struct rt_mmcsd_host *host)
     rt_int32_t err;
     struct rt_mmcsd_cmd cmd;
 
-    if (!controller_is_spi(host))
+    if (controller_is_spi(host)) // if (!controller_is_spi(host))
     {
         mmcsd_set_chip_select(host, MMCSD_CS_HIGH);
         mmcsd_delay_ms(1);
@@ -122,7 +124,7 @@ rt_int32_t mmcsd_go_idle(struct rt_mmcsd_host *host)
 
     mmcsd_delay_ms(1);
 
-    if (!controller_is_spi(host)) 
+    if (controller_is_spi(host))  // if (!controller_is_spi(host))  modify by zwx
     {
         mmcsd_set_chip_select(host, MMCSD_CS_IGNORE);
         mmcsd_delay_ms(1);

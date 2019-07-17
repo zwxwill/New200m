@@ -152,7 +152,7 @@ int rt_hw_rtc_init(void)
     }
 	else
 	{
-		LOG_D("rtc init success.");
+		LOG_D("rtc init success.\n");
 	}
 
     rt_device_open(&device, RT_DEVICE_OFLAG_RDWR);

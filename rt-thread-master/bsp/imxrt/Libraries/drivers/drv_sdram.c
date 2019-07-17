@@ -68,22 +68,24 @@ int rt_hw_sdram_Init(void)
     result = SEMC_ConfigureSDRAM(SEMC, SDRAM_REGION, &sdramconfig, clockFrq);
     if(result != kStatus_Success)
     {
-        LOG_E("SDRAM init failed!");
+        LOG_E("SDRAM init failed!\n");
         result = -RT_ERROR;
     }
     else
     {
-        LOG_D("sdram init success, mapped at 0x%X, size is %d bytes.", SDRAM_BANK_ADDR, SDRAM_SIZE);
+        LOG_D("sdram init success, mapped at 0x%X, size is %d bytes.\n", SDRAM_BANK_ADDR, SDRAM_SIZE);
 #ifdef RT_USING_MEMHEAP_AS_HEAP
         /* If RT_USING_MEMHEAP_AS_HEAP is enabled, SDRAM is initialized to the heap */
         rt_memheap_init(&system_heap, "sdram", (void *)SDRAM_BANK_ADDR, SDRAM_SIZE);
-		LOG_D("Rt-Thread Heap(SDRAM), begin: 0x%p, end: 0x%p, size:%dk", SDRAM_BANK_ADDR, SDRAM_BANK_ADDR+SDRAM_SIZE, SDRAM_SIZE);
+		LOG_D("Rt-Thread Heap(SDRAM), begin: 0x%p, end: 0x%p, size:%dk\n", SDRAM_BANK_ADDR, SDRAM_BANK_ADDR+SDRAM_SIZE, SDRAM_SIZE);
 #endif
     }
     
     return result;
 }
+#ifndef SKIP_SYSCLK_INIT
 INIT_BOARD_EXPORT(rt_hw_sdram_Init);
+#endif
 
 #ifdef DRV_DEBUG
 #ifdef FINSH_USING_MSH

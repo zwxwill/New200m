@@ -11,6 +11,7 @@
 #include <drivers/mmcsd_core.h>
 #include <drivers/sd.h>
 
+//#define DRV_DEBUG
 #define DBG_TAG               "SDIO"
 #ifdef RT_SDIO_DEBUG
 #define DBG_LVL               DBG_LOG
@@ -165,7 +166,7 @@ static rt_int32_t mmcsd_parse_csd(struct rt_mmcsd_card *card)
 
         return -RT_ERROR;
     }
-    LOG_I("SD card capacity %d KB.", card->card_capacity);
+    LOG_I("SD card capacity %d KB. %d G\n", card->card_capacity, card->card_capacity/1024/1024);
 
     return 0;
 }
@@ -737,7 +738,7 @@ remove_card:
     host->card = RT_NULL;
 err:
 
-    LOG_D("init SD card failed!");
+    LOG_D("init SD card failed!\n");
 
     return err;
 }

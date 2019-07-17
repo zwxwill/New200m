@@ -37,7 +37,7 @@ enum _sd_card_flag
  */
 typedef struct _sd_card
 {
-    SDMMCHOST_CONFIG host; /*!< Host information */
+    SDMMCHOST_CONFIG sdhost; /*!< Host information */
 
     sdcard_usr_param_t usrParam;    /*!< user parameter */
     bool isHostReady;               /*!< use this flag to indicate if need host re-init or not*/
@@ -61,7 +61,38 @@ typedef struct _sd_card
     sd_driver_strength_t driverStrength;        /*!< driver strength */
     sd_max_current_t maxCurrent;                /*!< card current limit */
     sdmmc_operation_voltage_t operationVoltage; /*!< card operation voltage */
+	struct rt_mmcsd_host *host;
 } sd_card_t;
+
+typedef struct _rt_sd_card
+{
+    SDMMCHOST_CONFIG sdhost; /*!< Host information */
+
+    sdcard_usr_param_t usrParam;    /*!< user parameter */
+    bool isHostReady;               /*!< use this flag to indicate if need host re-init or not*/
+    bool noInteralAlign;            /*!< use this flag to disable sdmmc align. If disable, sdmmc will not make sure the
+                                    data buffer address is word align, otherwise all the transfer are align to low level driver */
+    uint32_t busClock_Hz;           /*!< SD bus clock frequency united in Hz */
+    uint32_t relativeAddress;       /*!< Relative address of the card */
+    uint32_t version;               /*!< Card version */
+    uint32_t flags;                 /*!< Flags in _sd_card_flag */
+    uint32_t rawCid[4U];            /*!< Raw CID content */
+    uint32_t rawCsd[4U];            /*!< Raw CSD content */
+    uint32_t rawScr[2U];            /*!< Raw CSD content */
+    uint32_t ocr;                   /*!< Raw OCR content */
+    sd_cid_t cid;                   /*!< CID */
+    sd_csd_t csd;                   /*!< CSD */
+    sd_scr_t scr;                   /*!< SCR */
+    sd_status_t stat;               /*!< sd 512 bit status */
+    uint32_t blockCount;            /*!< Card total block number */
+    uint32_t blockSize;             /*!< Card block size */
+    sd_timing_mode_t currentTiming; /*!< current timing mode */
+    sd_driver_strength_t driverStrength;        /*!< driver strength */
+    sd_max_current_t maxCurrent;                /*!< card current limit */
+    sdmmc_operation_voltage_t operationVoltage; /*!< card operation voltage */
+	struct rt_mmcsd_host *host;
+} rt_sd_card_t;
+
 
 /*************************************************************************************************
  * API
@@ -305,6 +336,10 @@ status_t SD_SetDriverStrength(sd_card_t *card, sd_driver_strength_t driverStreng
  * @param maxCurrent Max current
  */
 status_t SD_SetMaxCurrent(sd_card_t *card, sd_max_current_t maxCurrent);
+
+status_t rt_SD_GoIdle(sd_card_t *card);
+status_t rt_SD_SendInterfaceCondition(sd_card_t *card);
+status_t rt_SD_WaitWriteComplete(sd_card_t *card);
 
 /* @} */
 

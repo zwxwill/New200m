@@ -156,7 +156,7 @@ static void _signal_deliver(rt_thread_t tid)
 #endif
 
             rt_hw_interrupt_enable(level);
-            LOG_D("signal stack pointer @ 0x%08x", tid->sp);
+            LOG_D("signal stack pointer @ 0x%08x\n", tid->sp);
 
             /* re-schedule */
             rt_schedule();
@@ -344,7 +344,7 @@ __done:
         {
             *si  = si_node->si;
 
-            LOG_D("sigwait: %d sig raised!", signo);
+            LOG_D("sigwait: %d sig raised!\n", signo);
             if (si_prev) si_prev->list.next = si_node->list.next;
             else
             {
@@ -417,7 +417,7 @@ void rt_thread_handle_sig(rt_bool_t clean_state)
                 tid->sig_pending &= ~sig_mask(signo);
                 rt_hw_interrupt_enable(level);
 
-                LOG_D("handle signal: %d, handler 0x%08x", signo, handler);
+                LOG_D("handle signal: %d, handler 0x%08x\n", signo, handler);
                 if (handler) handler(signo);
 
                 level = rt_hw_interrupt_disable();
@@ -480,7 +480,7 @@ void rt_thread_free_sig(rt_thread_t tid)
         struct rt_slist_node *node;
         struct rt_slist_node *node_to_free;
 
-        LOG_D("free signal info list");
+        LOG_D("free signal info list\n");
         node = &(si_node->list);
         do
         {

@@ -109,10 +109,10 @@ static rt_err_t rt_mmcsd_req_blk(struct rt_mmcsd_card *card,
     struct rt_mmcsd_cmd  cmd, stop;
     struct rt_mmcsd_data  data;
     struct rt_mmcsd_req  req;
-    struct rt_mmcsd_host *host = card->host;
     rt_uint32_t r_cmd, w_cmd;
+	
+    mmcsd_host_lock(card->host);
 
-    mmcsd_host_lock(host);
     rt_memset(&req, 0, sizeof(struct rt_mmcsd_req));
     rt_memset(&cmd, 0, sizeof(struct rt_mmcsd_cmd));
     rt_memset(&stop, 0, sizeof(struct rt_mmcsd_cmd));
@@ -162,7 +162,7 @@ static rt_err_t rt_mmcsd_req_blk(struct rt_mmcsd_card *card,
 
     mmcsd_set_data_timeout(&data, card);
     data.buf = buf;
-    mmcsd_send_request(host, &req);
+    mmcsd_send_request(card->host, &req);
 
     if (!controller_is_spi(card->host) && dir != 0) 
     {
@@ -188,7 +188,7 @@ static rt_err_t rt_mmcsd_req_blk(struct rt_mmcsd_card *card,
             (R1_CURRENT_STATE(cmd.resp[0]) == 7));
     }
 
-    mmcsd_host_unlock(host);
+    mmcsd_host_unlock(card->host);
 
     if (cmd.err || data.err || stop.err) 
     {
@@ -320,8 +320,8 @@ static rt_int32_t mmcsd_set_blksize(struct rt_mmcsd_card *card)
     int err;
 
     /* Block-addressed cards ignore MMC_SET_BLOCKLEN. */
-    if (card->flags & CARD_FLAG_SDHC)
-        return 0;
+//    if (card->flags & CARD_FLAG_SDHC)
+//        return 0;
 
     mmcsd_host_lock(card->host);
     cmd.cmd_code = SET_BLOCKLEN;
@@ -367,7 +367,7 @@ rt_int32_t rt_mmcsd_blk_probe(struct rt_mmcsd_card *card)
         return err;
     }
 
-    LOG_D("probe mmcsd block device!");
+    LOG_D("probe mmcsd block device!\n");
 
     /* get the first sector to read partition table */
     sector = (rt_uint8_t *)rt_malloc(SECTOR_SIZE);

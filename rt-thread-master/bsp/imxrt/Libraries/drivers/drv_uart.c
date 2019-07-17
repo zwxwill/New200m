@@ -766,11 +766,11 @@ int rt_hw_uart_init(void)
 	
 	if(ret != RT_EOK)
 	{
-		LOG_E("uart init fail.");
+		LOG_E("uart init fail.\n");
 	}
 	else
 	{
-		LOG_D("uart init success.");
+		LOG_D("uart init success.\n");
 	}
 
     return ret;

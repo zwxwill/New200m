@@ -47,7 +47,7 @@ int dfs_file_open(struct dfs_fd *fd, const char *path, int flags)
         return -ENOMEM;
     }
 
-    LOG_D("open file:%s", fullpath);
+    LOG_D("open file:%s\n", fullpath);
 
     /* find filesystem */
     fs = dfs_filesystem_lookup(fullpath);
@@ -58,7 +58,7 @@ int dfs_file_open(struct dfs_fd *fd, const char *path, int flags)
         return -ENOENT;
     }
 
-    LOG_D("open in filesystem:%s", fs->ops->name);
+    LOG_D("open in filesystem:%s\n", fs->ops->name);
     fd->fs    = fs;             /* set file system */
     fd->fops  = fs->ops->fops;  /* set file ops */
 
@@ -76,7 +76,7 @@ int dfs_file_open(struct dfs_fd *fd, const char *path, int flags)
         else
             fd->path = rt_strdup(dfs_subdir(fs->path, fullpath));
         rt_free(fullpath);
-        LOG_D("Actual file path: %s", fd->path);
+        LOG_D("Actual file path: %s\n", fd->path);
     }
     else
     {
@@ -99,7 +99,7 @@ int dfs_file_open(struct dfs_fd *fd, const char *path, int flags)
         rt_free(fd->path);
         fd->path = NULL;
 
-        LOG_D("%s open failed", fullpath);
+        LOG_D("%s open failed\n", fullpath);
 
         return result;
     }
@@ -111,7 +111,7 @@ int dfs_file_open(struct dfs_fd *fd, const char *path, int flags)
         fd->flags |= DFS_F_DIRECTORY;
     }
 
-    LOG_D("open successful");
+    LOG_D("open successful\n");
     return 0;
 }
 

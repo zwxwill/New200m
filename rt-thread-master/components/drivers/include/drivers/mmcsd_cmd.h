@@ -54,8 +54,8 @@ extern "C" {
 #define SEND_WRITE_PROT      30   /* adtc [31:0] wpdata addr R1  */
 
   /* class 5 */
-#define ERASE_GROUP_START    35   /* ac   [31:0] data addr   R1  */
-#define ERASE_GROUP_END      36   /* ac   [31:0] data addr   R1  */
+#define ERASE_GROUP_START    32   /* ac   [31:0] data addr   R1  */
+#define ERASE_GROUP_END      33   /* ac   [31:0] data addr   R1  */
 #define ERASE                38   /* ac                      R1b */
 
   /* class 9 */

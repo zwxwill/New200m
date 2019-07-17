@@ -1988,12 +1988,14 @@ void USDHC_TransferHandleIRQ(USDHC_Type *base, usdhc_handle_t *handle)
 #ifdef USDHC0
 void USDHC0_DriverIRQHandler(void)
 {
+	rt_interrupt_enter();
     s_usdhcIsr(s_usdhcBase[0U], s_usdhcHandle[0U]);
 /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
   exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
+	rt_interrupt_leave();
 }
 #endif
 

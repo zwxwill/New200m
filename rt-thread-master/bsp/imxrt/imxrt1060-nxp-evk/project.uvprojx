@@ -10,7 +10,7 @@
       <TargetName>rtthread</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>MIMXRT1062DVL6A</Device>
@@ -333,9 +333,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--library_interface=armcc --library_type=standardlib --diag_suppress=66,1296,186</MiscControls>
-              <Define>CPU_MIMXRT1062DVL6A, XIP_EXTERNAL_FLASH=1, RT_USING_ARM_LIBC, XIP_BOOT_HEADER_ENABLE=1</Define>
+              <Define>CPU_MIMXRT1062DVL6A, XIP_EXTERNAL_FLASH=1, RT_USING_ARM_LIBC, XIP_BOOT_HEADER_ENABLE=1,FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1,</Define>
               <Undefine></Undefine>
-              <IncludePath>.;..\..\..\include;applications;board;board\MCUX_Config;board\xip;board\ports;..\Libraries\drivers;..\Libraries\drivers\config;board;..\Libraries\MIMXRT1060;board;test;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m7;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\finsh;..\..\..\components\libc\compilers\armlibc;..\..\..\components\libc\compilers\common;..\Libraries\MIMXRT1060\CMSIS\Include;..\Libraries\MIMXRT1060\MIMXRT1062;..\Libraries\MIMXRT1060\MIMXRT1062\drivers;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\inc;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port</IncludePath>
+              <IncludePath>.;..\..\..\include;applications;board;board\MCUX_Config;board\xip;board\ports;..\Libraries\drivers;..\Libraries\drivers\config;board;..\Libraries\MIMXRT1060;board;test;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m7;..\..\..\components\dfs\include;..\..\..\components\dfs\filesystems\devfs;..\..\..\components\dfs\filesystems\elmfat;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\finsh;..\..\..\components\libc\compilers\armlibc;..\..\..\components\libc\compilers\common;..\Libraries\MIMXRT1060\CMSIS\Include;..\Libraries\MIMXRT1060\MIMXRT1062;..\Libraries\MIMXRT1060\MIMXRT1062\drivers;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\inc;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -369,7 +369,11 @@
             <ScatterFile>.\board\linker_scripts\link.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc></Misc>
+            <Misc>--remove 
+--keep=*(.boot_hdr.ivt) 
+--keep=*(.boot_hdr.boot_data) 
+--keep=*(.boot_hdr.conf) 
+--predefine="-DXIP_BOOT_HEADER_ENABLE=1"</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings>6314</DisabledWarnings>
           </LDads>
@@ -524,6 +528,11 @@
               <FileType>1</FileType>
               <FilePath>..\Libraries\drivers\drv_sd.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_usdhc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\drivers\drv_usdhc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -569,6 +578,16 @@
               <FileType>1</FileType>
               <FilePath>test\test_sem.c</FilePath>
             </File>
+            <File>
+              <FileName>test_performance.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test\test_performance.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test\test_sd.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -607,6 +626,61 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Filesystem</GroupName>
+          <Files>
+            <File>
+              <FileName>dfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\src\dfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>dfs_file.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\src\dfs_file.c</FilePath>
+            </File>
+            <File>
+              <FileName>dfs_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\src\dfs_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>dfs_posix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\src\dfs_posix.c</FilePath>
+            </File>
+            <File>
+              <FileName>poll.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\src\poll.c</FilePath>
+            </File>
+            <File>
+              <FileName>select.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\src\select.c</FilePath>
+            </File>
+            <File>
+              <FileName>devfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\filesystems\devfs\devfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>dfs_elm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\filesystems\elmfat\dfs_elm.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\filesystems\elmfat\ff.c</FilePath>
+            </File>
+            <File>
+              <FileName>ccsbcs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\dfs\filesystems\elmfat\option\ccsbcs.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>DeviceDrivers</GroupName>
           <Files>
             <File>
@@ -623,6 +697,31 @@
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\components\drivers\rtc\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>block_dev.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\drivers\sdio\block_dev.c</FilePath>
+            </File>
+            <File>
+              <FileName>mmcsd_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\drivers\sdio\mmcsd_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\drivers\sdio\sd.c</FilePath>
+            </File>
+            <File>
+              <FileName>sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\drivers\sdio\sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>mmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\drivers\sdio\mmc.c</FilePath>
             </File>
             <File>
               <FileName>serial.c</FileName>
@@ -713,6 +812,11 @@
               <FileName>mem_std.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\components\libc\compilers\armlibc\mem_std.c</FilePath>
+            </File>
+            <File>
+              <FileName>stdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\libc\compilers\armlibc\stdio.c</FilePath>
             </File>
             <File>
               <FileName>stubs.c</FileName>
