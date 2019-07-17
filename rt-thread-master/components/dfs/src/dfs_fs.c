@@ -183,7 +183,7 @@ int dfs_filesystem_get_partition(struct dfs_partition *part,
     part->offset = *(dpt + 8) | *(dpt + 9) << 8 | *(dpt + 10) << 16 | *(dpt + 11) << 24;
     part->size = *(dpt + 12) | *(dpt + 13) << 8 | *(dpt + 14) << 16 | *(dpt + 15) << 24;
 
-    rt_kprintf("found part[%d], begin: %d, size: ",
+    LOG_I("found part[%d], begin: %d, size: \n",
                pindex, part->offset * 512);
     if ((part->size >> 11) == 0)
         rt_kprintf("%d%s", part->size >> 1, "KB\n"); /* KB */
