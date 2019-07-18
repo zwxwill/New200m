@@ -42,6 +42,8 @@ if GetDepend('BSP_USING_RNG'):
 	
 if GetDepend('BSP_USING_SD'):
     src += ['drv_sd.c']
+	
+if GetDepend('BSP_USING_SD'):	
 	src += ['drv_usdhc.c']
 
 path =  [cwd,cwd + '/config']

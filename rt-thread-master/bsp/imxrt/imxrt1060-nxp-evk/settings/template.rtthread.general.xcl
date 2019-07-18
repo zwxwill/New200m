@@ -1,8 +1,8 @@
 "H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\bin\armproc.dll" 
 
-"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\bin\armJET.dll" 
+"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\bin\armjlink2.dll" 
 
-"H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\build\iar\Exe\rtthread.out" 
+"H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\build\iar\Exe\rtthread.out" 
 
 --plugin="H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\bin\armbat.dll" 
 
@@ -10,7 +10,7 @@
 
 --device_macro="H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\config\debugger\NXP\iMXRT_Trace.dmac" 
 
---flash_loader="H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\config\flashloader\NXP\FlashIMXRT1052_YH_FlexSPI.board" 
+--flash_loader="H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\config\flashloader\NXP\FlashIMXRT1060_EVK_FlexSPI.board" 
 
 
 

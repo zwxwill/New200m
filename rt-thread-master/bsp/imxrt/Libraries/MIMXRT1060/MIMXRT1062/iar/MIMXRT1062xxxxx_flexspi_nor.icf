@@ -1,21 +1,18 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1052CVJ5B
-**                          MIMXRT1052CVL5B
-**                          MIMXRT1052DVJ6B
-**                          MIMXRT1052DVL6B
+**     Processors:          MIMXRT1064CVL5A
+**                          MIMXRT1064DVL6A
 **
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
-**     Reference manual:    IMXRT1050RM Rev.1, 03/2018
-**     Version:             rev. 1.0, 2018-09-21
-**     Build:               b180921
+**     Reference manual:    IMXRT1064RM Rev.B, 08/2018
+**     Version:             rev. 0.1, 2018-06-22
+**     Build:               b180822
 **
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
 **     Copyright 2016-2018 NXP
-**     All rights reserved.
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -25,22 +22,22 @@
 ** ###################################################################
 */
 
-define symbol m_interrupts_start       = 0x60002000;  /* SPI Flash */
-define symbol m_interrupts_end         = 0x600023FF;
+define symbol m_interrupts_start       = 0x70002000;
+define symbol m_interrupts_end         = 0x700023FF;
 
-define symbol m_text_start             = 0x60002400;
-define symbol m_text_end               = 0x607FFFFF;  /* 8M */
+define symbol m_text_start             = 0x70002400;
+define symbol m_text_end               = 0x703FFFFF;
 
-define symbol m_data_start             = 0x20000000;  /* DTCM */
+define symbol m_data_start             = 0x20000000;
 define symbol m_data_end               = 0x2001FFFF;
 
-define symbol m_data2_start            = 0x20200000;  /* OCRAM */
+define symbol m_data2_start            = 0x20200000;
 define symbol m_data2_end              = 0x202BFFFF;
 
-define exported symbol m_boot_hdr_conf_start = 0x60000000;
-define symbol m_boot_hdr_ivt_start           = 0x60001000;
-define symbol m_boot_hdr_boot_data_start     = 0x60001020;
-define symbol m_boot_hdr_dcd_data_start      = 0x60001030;
+define exported symbol m_boot_hdr_conf_start = 0x70000000;
+define symbol m_boot_hdr_ivt_start           = 0x70001000;
+define symbol m_boot_hdr_boot_data_start     = 0x70001020;
+define symbol m_boot_hdr_dcd_data_start      = 0x70001030;
 
 /* Sizes */
 if (isdefinedsymbol(__stack_size__)) {
@@ -58,7 +55,6 @@ if (isdefinedsymbol(__heap_size__)) {
 define exported symbol __VECTOR_TABLE  = m_interrupts_start;
 define exported symbol __VECTOR_RAM    = m_interrupts_start;
 define exported symbol __RAM_VECTOR_TABLE_SIZE = 0x0;
-define exported symbol __RTT_HEAP_END = m_data2_end;
 
 define memory mem with size = 4G;
 define region TEXT_region = mem:[from m_interrupts_start to m_interrupts_end]

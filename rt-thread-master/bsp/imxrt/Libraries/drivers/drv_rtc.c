@@ -13,7 +13,7 @@
 
 #ifdef BSP_USING_RTC
 
-#define DRV_DEBUG   /* 是否打印驱动调试信息 */
+//#define DRV_DEBUG   /* 是否打印驱动调试信息 */
 #define LOG_TAG             "drv.rtc"
 #include <drv_log.h>
 

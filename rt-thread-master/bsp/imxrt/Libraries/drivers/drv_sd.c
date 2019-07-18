@@ -111,8 +111,6 @@ static void CardDetectTask(void *pvParameters)
 
 static status_t SDCARD_ReadWrite(sd_card_t *card, bool isReadOnly)
 {
-	rt_uint8_t *write_buff, *read_buff;
-
     if (isReadOnly)
     {
         rt_kprintf("\r\nRead one data block......\r\n");
@@ -132,12 +130,10 @@ static status_t SDCARD_ReadWrite(sd_card_t *card, bool isReadOnly)
     else
     {
         memset(g_dataWrite, 0x67U, sizeof(g_dataWrite));
-		
-		memset(write_buff, 0x37U, 512);
 
         rt_kprintf("\r\nWrite/read one data block......\r\n");
 		
-		if (kStatus_Success != SD_WriteBlocks(card, write_buff, 0, 1U))
+		if (kStatus_Success != SD_WriteBlocks(card, g_dataRead, DATA_BLOCK_START, 1U))
         {
             rt_kprintf("Write one data block failed.\r\n");
             return kStatus_Fail;
@@ -196,7 +192,6 @@ static void AccessCardTask(void *pvParameters)
 {
     sd_card_t *card = &g_sd;
     bool isReadOnly;
-    char ch = '0';
 
     /* take card access semaphore */
     rt_sem_take(s_CardAccessSemaphore, RT_WAITING_FOREVER);
@@ -212,8 +207,6 @@ static void AccessCardTask(void *pvParameters)
 	isReadOnly = SD_CheckReadOnly(card);
 
 	SDCARD_ReadWrite(card, isReadOnly);
-	
-	
 }
 
 int rt_hw_sd_Init(void)

@@ -337,10 +337,6 @@ status_t SD_SetDriverStrength(sd_card_t *card, sd_driver_strength_t driverStreng
  */
 status_t SD_SetMaxCurrent(sd_card_t *card, sd_max_current_t maxCurrent);
 
-status_t rt_SD_GoIdle(sd_card_t *card);
-status_t rt_SD_SendInterfaceCondition(sd_card_t *card);
-status_t rt_SD_WaitWriteComplete(sd_card_t *card);
-
 /* @} */
 
 #if defined(__cplusplus)

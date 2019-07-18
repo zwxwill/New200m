@@ -183,19 +183,20 @@ int dfs_filesystem_get_partition(struct dfs_partition *part,
     part->offset = *(dpt + 8) | *(dpt + 9) << 8 | *(dpt + 10) << 16 | *(dpt + 11) << 24;
     part->size = *(dpt + 12) | *(dpt + 13) << 8 | *(dpt + 14) << 16 | *(dpt + 15) << 24;
 
-    LOG_I("found part[%d], begin: %d, size: \n",
+    LOG_D("found part[%d], begin: %d, size: ",
                pindex, part->offset * 512);
     if ((part->size >> 11) == 0)
-        rt_kprintf("%d%s", part->size >> 1, "KB\n"); /* KB */
+        LOG_D("%d%s", part->size >> 1, "KB "); /* KB */
     else
     {
         unsigned int part_size;
         part_size = part->size >> 11;                /* MB */
         if ((part_size >> 10) == 0)
-            rt_kprintf("%d.%d%s", part_size, (part->size >> 1) & 0x3FF, "MB\n");
+            LOG_D("%d.%d%s", part_size, (part->size >> 1) & 0x3FF, "MB ");
         else
-            rt_kprintf("%d.%d%s", part_size >> 10, part_size & 0x3FF, "GB\n");
+            LOG_D("%d.%d%s", part_size >> 10, part_size & 0x3FF, "GB ");
     }
+	LOG_D("\n");
 
     return RT_EOK;
 }
@@ -466,7 +467,7 @@ int dfs_mkfs(const char *fs_name, const char *device_name)
         return ops->mkfs(dev_id);
     }
 
-    LOG_E("File system (%s) was not found.", fs_name);
+    LOG_E("File system (%s) was not found.\n", fs_name);
 
     return -1;
 }

@@ -201,7 +201,7 @@ static void rt_ushdc_request(struct rt_mmcsd_host *host, struct rt_mmcsd_req *re
 
 	if (kStatus_Success != card->sdhost.transfer(card->sdhost.base, &content))
 	{
-		LOG_E("USDHC send cmd %d failed\n", command.index);
+		LOG_E("USDHC send cmd%d failed\n", command.index);
 		cmd->err = -RT_ERROR;
 	}
 	
@@ -261,7 +261,7 @@ static void rt_ushdc_set_iocfg(struct rt_mmcsd_host *host, struct rt_mmcsd_io_cf
 		/* power on the card */
 		SD_PowerOnCard(card->sdhost.base, card->usrParam.pwr);			
 		/* set DATA bus width */
-		SDMMCHOST_SET_CARD_BUS_WIDTH(card->sdhost.base, bus_width);	
+		SDMMCHOST_SET_CARD_BUS_WIDTH(card->sdhost.base, (usdhc_data_bus_width_t)bus_width);	
 	}
 	else if(io_cfg->power_mode == MMCSD_POWER_ON)
 	{
@@ -272,12 +272,12 @@ static void rt_ushdc_set_iocfg(struct rt_mmcsd_host *host, struct rt_mmcsd_io_cf
 		/* Get host capability. */
 		GET_SDMMCHOST_CAPABILITY(card->sdhost.base, &(card->sdhost.capability));
 		/* set DATA bus width */
-		SDMMCHOST_SET_CARD_BUS_WIDTH(card->sdhost.base, bus_width);		
+		SDMMCHOST_SET_CARD_BUS_WIDTH(card->sdhost.base, (usdhc_data_bus_width_t)bus_width);		
 	}
 	else if(io_cfg->power_mode == MMCSD_POWER_OFF)
 	{
 		/* set DATA bus width */
-		SDMMCHOST_SET_CARD_BUS_WIDTH(card->sdhost.base, bus_width);		
+		SDMMCHOST_SET_CARD_BUS_WIDTH(card->sdhost.base, (usdhc_data_bus_width_t)bus_width);		
 		/* power off card */
 		SD_PowerOffCard(card->sdhost.base, card->usrParam.pwr);	
 	}

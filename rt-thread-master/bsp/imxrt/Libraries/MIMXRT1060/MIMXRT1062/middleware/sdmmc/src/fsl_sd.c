@@ -328,11 +328,6 @@ static status_t inline SD_GoIdle(sd_card_t *card)
     return SDMMC_GoIdle(card->sdhost.base, card->sdhost.transfer);
 }
 
-status_t rt_SD_GoIdle(sd_card_t *card)
-{
-	return SD_GoIdle(card);
-}
-
 static status_t inline SD_SetBlockSize(sd_card_t *card, uint32_t blockSize)
 {
     assert(card);
@@ -393,51 +388,51 @@ static status_t SD_Transfer(sd_card_t *card, SDMMCHOST_TRANSFER *content, uint32
     status_t error;
 
 	error = card->sdhost.transfer(card->sdhost.base, content);
-//    do
-//    {
-//        error = card->sdhost.transfer(card->sdhost.base, content);
-//#if SDMMC_ENABLE_SOFTWARE_TUNING
-//        if (((error == SDMMCHOST_RETUNING_REQUEST) || (error == SDMMCHOST_TUNING_ERROR)) &&
-//            (card->currentTiming == kSD_TimingSDR104Mode))
-//        {
-//            /* tuning error need reset tuning circuit */
-//            if (error == SDMMCHOST_TUNING_ERROR)
-//            {
-//                SDMMCHOST_RESET_TUNING(card->sdhost.base, 100U);
-//            }
+    do
+    {
+        error = card->sdhost.transfer(card->sdhost.base, content);
+#if SDMMC_ENABLE_SOFTWARE_TUNING
+        if (((error == SDMMCHOST_RETUNING_REQUEST) || (error == SDMMCHOST_TUNING_ERROR)) &&
+            (card->currentTiming == kSD_TimingSDR104Mode))
+        {
+            /* tuning error need reset tuning circuit */
+            if (error == SDMMCHOST_TUNING_ERROR)
+            {
+                SDMMCHOST_RESET_TUNING(card->sdhost.base, 100U);
+            }
 
-//            /* execute re-tuning */
-//            if (SD_ExecuteTuning(card) != kStatus_Success)
-//            {
-//                error = kStatus_SDMMC_TuningFail;
-//                break;
-//            }
-//            else
-//            {
-//                continue;
-//            }
-//        }
-//        else
-//#endif
-//            if (error != kStatus_Success)
-//        {
-//            /* if transfer data failed, send cmd12 to abort current transfer */
-//            if (content->data)
-//            {
-//                SD_StopTransmission(card);
-//            }
-//        }
+            /* execute re-tuning */
+            if (SD_ExecuteTuning(card) != kStatus_Success)
+            {
+                error = kStatus_SDMMC_TuningFail;
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
+        else
+#endif
+            if (error != kStatus_Success)
+        {
+            /* if transfer data failed, send cmd12 to abort current transfer */
+            if (content->data)
+            {
+                SD_StopTransmission(card);
+            }
+        }
 
-//        if (retry != 0U)
-//        {
-//            retry--;
-//        }
-//        else
-//        {
-//            break;
-//        }
+        if (retry != 0U)
+        {
+            retry--;
+        }
+        else
+        {
+            break;
+        }
 
-//    } while (error != kStatus_Success);
+    } while (error != kStatus_Success);
 
     return error;
 }
@@ -474,12 +469,6 @@ static status_t SD_WaitWriteComplete(sd_card_t *card)
 
     return error;
 }
-
-status_t rt_SD_WaitWriteComplete(sd_card_t *card)
-{
-	SD_WaitWriteComplete(card);
-}
-
 
 static status_t SD_SendWriteSuccessBlocks(sd_card_t *card, uint32_t *blocks)
 {
@@ -1126,12 +1115,6 @@ static status_t SD_SendInterfaceCondition(sd_card_t *card)
 
     return error;
 }
-
-status_t rt_SD_SendInterfaceCondition(sd_card_t *card)
-{
-	return SD_SendInterfaceCondition(card);
-}
-
 
 static status_t SD_SelectBusTiming(sd_card_t *card)
 {

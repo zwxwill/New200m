@@ -201,7 +201,7 @@ void rt_hw_board_init()
     rt_show_version();
 	
 #ifdef RT_USING_HEAP
-	LOG_D("Rt-Thread Heap(OCRAM), begin: 0x%p, end: 0x%p, size:%dk\n", HEAP_BEGIN, HEAP_END, (HEAP_END-HEAP_BEGIN)/1024);
+	LOG_D("Rt-Thread Heap(OCRAM), begin: 0x%p, end: 0x%p, size:%dk\n", (rt_uint32_t)HEAP_BEGIN, (rt_uint32_t)HEAP_END, ((rt_uint32_t)HEAP_END-(rt_uint32_t)HEAP_BEGIN)/1024);
 	rt_system_heap_init((void *)HEAP_BEGIN, (void *)HEAP_END);
 #endif	
 

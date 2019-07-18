@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" --backend -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
+"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" --backend -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" "--debug_file=%~1" --backend -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
+"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" "--debug_file=%~1" --backend -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
 
 @echo off 
 :end

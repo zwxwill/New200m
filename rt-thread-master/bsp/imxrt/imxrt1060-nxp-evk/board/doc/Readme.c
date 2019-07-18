@@ -24,7 +24,10 @@ C/C++ Define : CPU_MIMXRT1062DVL6A,FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1,
 
 	rtthread_startup(void) -- components.c
 
-3 
+3 更改 ulog_deg.h 
+  #define ULOG_NEWLINE_SIGN              "\r\n"
+  改为
+  #define ULOG_NEWLINE_SIGN              ""
 
 
 

@@ -65,7 +65,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>8.32.1.18618</state>
+          <state>8.32.4.20866</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -77,7 +77,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>MIMXRT1052xxx5B	NXP MIMXRT1052xxx5B</state>
+          <state>MIMXRT1062xxx6A	NXP MIMXRT1062xxx6A</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -115,7 +115,7 @@
         </option>
         <option>
           <name>GBECoreSlave</name>
-          <version>26</version>
+          <version>27</version>
           <state>41</state>
         </option>
         <option>
@@ -132,12 +132,12 @@
         </option>
         <option>
           <name>CoreVariant</name>
-          <version>26</version>
+          <version>27</version>
           <state>41</state>
         </option>
         <option>
           <name>GFPUDeviceSlave</name>
-          <state>MIMXRT1052xxx5B	NXP MIMXRT1052xxx5B</state>
+          <state>MIMXRT1062xxx6A	NXP MIMXRT1062xxx6A</state>
         </option>
         <option>
           <name>FPU2</name>
@@ -155,7 +155,7 @@
         </option>
         <option>
           <name>GFPUCoreSlave2</name>
-          <version>26</version>
+          <version>27</version>
           <state>41</state>
         </option>
         <option>
@@ -224,12 +224,11 @@
         <option>
           <name>CCDefines</name>
           <state />
-          <state>CPU_MIMXRT1052CVL5B</state>
-          <state>SKIP_SYSCLK_INIT</state>
-          <state>EVK_MCIMXRM</state>
-          <state>FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL</state>
-          <state>XIP_EXTERNAL_FLASH</state>
+          <state>CPU_MIMXRT1062DVL6A</state>
+          <state>XIP_EXTERNAL_FLASH=1</state>
+          <state>XIP_BOOT_HEADER_ENABLE=1</state>
           <state>RT_USING_DLIBC</state>
+          <state>_DLIB_FILE_DESCRIPTOR</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -355,23 +354,33 @@
         <option>
           <name>CCIncludePath2</name>
           <state />
-          <state>$PROJ_DIR$\board\MCUX_Config</state>
+          <state>$PROJ_DIR$\..\..\..\components\dfs\filesystems\devfs</state>
           <state>$PROJ_DIR$\..\..\..\components\finsh</state>
-          <state>$PROJ_DIR$\..\..\..\libcpu\arm\common</state>
-          <state>$PROJ_DIR$\..\..\..\libcpu\arm\cortex-m7</state>
+          <state>$PROJ_DIR$\..\..\..\components\drivers\include</state>
+          <state>$PROJ_DIR$\..\Libraries\MIMXRT1060\CMSIS\Include</state>
+          <state>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\inc</state>
+          <state>$PROJ_DIR$\board\xip</state>
+          <state>$PROJ_DIR$\..\..\..\components\utilities\utest</state>
+          <state>$PROJ_DIR$\..\..\..\components\libc\compilers\dlib</state>
+          <state>$PROJ_DIR$\..\..\..\components\libc\compilers\common</state>
+          <state>$PROJ_DIR$\..\..\..\components\dfs\include</state>
+          <state>$PROJ_DIR$\..\Libraries\drivers\config</state>
+          <state>$PROJ_DIR$\.</state>
+          <state>$PROJ_DIR$\board</state>
+          <state>$PROJ_DIR$\test</state>
+          <state>$PROJ_DIR$\board\MCUX_Config</state>
           <state>$PROJ_DIR$\board\ports</state>
           <state>$PROJ_DIR$\..\Libraries\drivers</state>
-          <state>$PROJ_DIR$\..\Libraries\drivers\config</state>
-          <state>$PROJ_DIR$\..\..\..\components\drivers\include</state>
-          <state>$PROJ_DIR$\.</state>
           <state>$PROJ_DIR$\applications</state>
-          <state>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\drivers</state>
-          <state>$PROJ_DIR$\..\..\..\components\libc\compilers\dlib</state>
-          <state>$PROJ_DIR$\board</state>
-          <state>$PROJ_DIR$\..\Libraries\MIMXRT1050\CMSIS\Include</state>
-          <state>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052</state>
-          <state>$PROJ_DIR$\..\..\..\components\libc\compilers\common</state>
+          <state>$PROJ_DIR$\..\..\..\components\dfs\filesystems\elmfat</state>
           <state>$PROJ_DIR$\..\..\..\include</state>
+          <state>$PROJ_DIR$\..\..\..\components\utilities\ulog</state>
+          <state>$PROJ_DIR$\..\..\..\libcpu\arm\common</state>
+          <state>$PROJ_DIR$\..\..\..\libcpu\arm\cortex-m7</state>
+          <state>$PROJ_DIR$\..\Libraries\MIMXRT1060</state>
+          <state>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers</state>
+          <state>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062</state>
+          <state>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1109,6 +1118,12 @@
   <group>
     <name>Applications</name>
     <file>
+      <name>$PROJ_DIR$\applications\app_led.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\applications\app_sd.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\applications\main.c</name>
     </file>
   </group>
@@ -1129,6 +1144,63 @@
     <file>
       <name>$PROJ_DIR$\..\Libraries\drivers\drv_uart.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\drivers\drv_rtc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\drivers\drv_sdram.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\drivers\drv_rng.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\drivers\drv_sd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\drivers\drv_usdhc.c</name>
+    </file>
+  </group>
+  <group>
+    <name>xip</name>
+    <file>
+      <name>$PROJ_DIR$\board\xip\evkmimxrt1060_flexspi_nor_config.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\board\xip\evkmimxrt1060_sdram_ini_dcd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\xip\fsl_flexspi_nor_boot.c</name>
+    </file>
+  </group>
+  <group>
+    <name>Doc</name>
+    <file>
+      <name>$PROJ_DIR$\board\doc\Readme.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\board\doc\ReleaseNote.c</name>
+    </file>
+  </group>
+  <group>
+    <name>test</name>
+    <file>
+      <name>$PROJ_DIR$\test\test_fatfs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\test\test_log.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\test\test_performance.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\test\test_sd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\test\test_sem.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\test\test_utest.c</name>
+    </file>
   </group>
   <group>
     <name>cpu</name>
@@ -1142,10 +1214,46 @@
       <name>$PROJ_DIR$\..\..\..\libcpu\arm\common\showmem.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\libcpu\arm\cortex-m7\cpu_cache.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\libcpu\arm\cortex-m7\cpuport.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\libcpu\arm\cortex-m7\context_iar.S</name>
+    </file>
+  </group>
+  <group>
+    <name>Filesystem</name>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\src\dfs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\src\dfs_file.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\src\dfs_fs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\src\dfs_posix.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\src\poll.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\src\select.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\filesystems\devfs\devfs.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\filesystems\elmfat\dfs_elm.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\filesystems\elmfat\ff.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\dfs\filesystems\elmfat\option\ccsbcs.c</name>
     </file>
   </group>
   <group>
@@ -1155,6 +1263,24 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\components\drivers\misc\pin.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\drivers\rtc\rtc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\drivers\sdio\block_dev.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\drivers\sdio\mmcsd_core.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\drivers\sdio\sd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\drivers\sdio\sdio.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\drivers\sdio\mmc.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\components\drivers\serial\serial.c</name>
@@ -1248,27 +1374,78 @@
     </file>
   </group>
   <group>
+    <name>Utilities</name>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\utilities\ulog\ulog.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\utilities\ulog\backend\console_be.c</name>
+    </file>
+  </group>
+  <group>
+    <name>utest</name>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\components\utilities\utest\utest.c</name>
+    </file>
+  </group>
+  <group>
     <name>Libraries</name>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\system_MIMXRT1052.c</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\iar\startup_MIMXRT1062.s</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\drivers\fsl_common.c</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\system_MIMXRT1062.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\drivers\fsl_clock.c</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_common.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\drivers\fsl_cache.c</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_clock.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\iar\startup_MIMXRT1052.s</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_cache.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\drivers\fsl_gpio.c</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_gpio.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Libraries\MIMXRT1050\MIMXRT1052\drivers\fsl_lpuart.c</name>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_lpuart.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_snvs_hp.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_snvs_lp.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_semc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_usdhc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_dmamux.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_edma.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_lpuart_edma.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\drivers\fsl_trng.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\src\fsl_sd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\src\fsl_sdmmc_common.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port\usdhc\freertos\fsl_sdmmc_host.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port\usdhc\freertos\fsl_sdmmc_event.c</name>
     </file>
   </group>
 </project>

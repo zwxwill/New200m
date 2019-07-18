@@ -6,33 +6,27 @@
 
 "-p" 
 
-"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\CONFIG\debugger\NXP\MIMXRT1052xxx5B.ddf" 
+"H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\arm\CONFIG\debugger\NXP\MIMXRT1062xxx6A.ddf" 
 
 "--drv_verify_download" 
 
 "--semihosting" 
 
-"--device=MIMXRT1052xxx5B" 
+"--device=MIMXRT1062xxx6A" 
 
-"--multicore_nr_of_cores=1" 
+"--drv_communication=USB0" 
 
-"--jet_probe=cmsisdap" 
+"--drv_interface_speed=auto" 
 
-"--jet_standard_reset=0,0,0" 
+"--jlink_initial_speed=32" 
 
-"--reset_style=\"0,-,1,Disabled__no_reset_\"" 
-
-"--reset_style=\"1,-,0,Software\"" 
-
-"--reset_style=\"2,-,0,Hardware\"" 
-
-"--reset_style=\"3,-,0,Core\"" 
-
-"--reset_style=\"4,-,0,System\"" 
+"--jlink_reset_strategy=0,0" 
 
 "--drv_interface=SWD" 
 
-"--drv_catch_exceptions=0xff0" 
+"--drv_catch_exceptions=0x000" 
+
+"--jlink_device_name=MIMXRT1062xxx6A" 
 
 
 

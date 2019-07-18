@@ -15,12 +15,13 @@
 #include <rtdevice.h>
 #endif
 
-#define DRV_DEBUG
+//#define DRV_DEBUG
 #define LOG_TAG             "app.sd"
 #include <drv_log.h>
 
 
 /* Exported variables --------------------------------------------------------*/
+uint8_t g_uiFileOk = 0;
 /* Exported functions --------------------------------------------------------*/
 /* Private typedef -----------------------------------------------------------*/
 /* Private struct  -----------------------------------------------------------*/
@@ -48,9 +49,14 @@ void app_sd(void* parameter)
 		LOG_D("SD Card is inserted.\n");
         /* mount sd card fat partition 1 as root directory */
         if (dfs_mount("sd0", "/", "elm", 0, 0) == 0)
-            LOG_I("File System initialized!\n");
+        {
+		    LOG_I("File System initialized!\n");
+			g_uiFileOk = 1;
+		}        
         else
-            LOG_E("File System init failed!\n");		
+        {
+			LOG_E("File System init failed!\n");
+		}            		
 	}
 	else
 	{

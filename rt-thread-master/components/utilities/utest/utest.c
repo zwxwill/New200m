@@ -78,8 +78,8 @@ int utest_init(void)
     tc_num = (utest_tc_export_t) &__rt_utest_tc_tab_end - tc_table;
 #endif /* defined(__CC_ARM) */
 
-    LOG_I("utest is initialize success.");
-    LOG_I("total utest testcase num: (%d)", tc_num);
+    LOG_I("utest is initialize success.\n");
+    LOG_I("total utest testcase num: (%d)\n", tc_num);
     return tc_num;
 }
 INIT_COMPONENT_EXPORT(utest_init);
@@ -88,11 +88,11 @@ static void utest_tc_list(void)
 {
     rt_size_t i = 0;
 
-    LOG_I("Commands list : ");
+    LOG_I("Commands list : \n");
 
     for (i = 0; i < tc_num; i++)
     {
-        LOG_I("[testcase name]:%s; [run timeout]:%d", tc_table[i].name, tc_table[i].run_timeout);
+        LOG_I("[testcase name]:%s; [run timeout]:%d\n", tc_table[i].name, tc_table[i].run_timeout);
     }
 }
 MSH_CMD_EXPORT_ALIAS(utest_tc_list, utest_list, output all utest testcase);
@@ -154,8 +154,8 @@ static void utest_run(const char *utest_name)
     {
         i = 0;
         is_find = RT_FALSE;
-        LOG_I("[==========] [ utest    ] loop %d/%d", index + 1, tc_loop);
-        LOG_I("[==========] [ utest    ] started");
+        LOG_I("[==========] [ utest    ] loop %d/%d\n", index + 1, tc_loop);
+        LOG_I("[==========] [ utest    ] started\n");
         while(i < tc_num)
         {
             if (utest_name)
@@ -173,12 +173,12 @@ static void utest_run(const char *utest_name)
             }
             is_find = RT_TRUE;
 
-            LOG_I("[----------] [ testcase ] (%s) started", tc_table[i].name);
+            LOG_I("[----------] [ testcase ] (%s) started\n", tc_table[i].name);
             if (tc_table[i].init != RT_NULL)
             {
                 if (tc_table[i].init() != RT_EOK)
                 {
-                    LOG_E("[  FAILED  ] [ result   ] testcase (%s)", tc_table[i].name);
+                    LOG_E("[  FAILED  ] [ result   ] testcase (%s)\n", tc_table[i].name);
                     goto __tc_continue;
                 }
             }
@@ -188,41 +188,41 @@ static void utest_run(const char *utest_name)
                 tc_table[i].tc();
                 if (local_utest.failed_num == 0)
                 {
-                    LOG_I("[  PASSED  ] [ result   ] testcase (%s)", tc_table[i].name);
+                    LOG_I("[  PASSED  ] [ result   ] testcase (%s)\n", tc_table[i].name);
                 }
                 else
                 {
-                    LOG_E("[  FAILED  ] [ result   ] testcase (%s)", tc_table[i].name);
+                    LOG_E("[  FAILED  ] [ result   ] testcase (%s)\n", tc_table[i].name);
                 }
             }
             else
             {
-                LOG_E("[  FAILED  ] [ result   ] testcase (%s)", tc_table[i].name);
+                LOG_E("[  FAILED  ] [ result   ] testcase (%s)\n", tc_table[i].name);
             }
 
             if (tc_table[i].cleanup != RT_NULL)
             {
                 if (tc_table[i].cleanup() != RT_EOK)
                 {
-                    LOG_E("[  FAILED  ] [ result   ] testcase (%s)", tc_table[i].name);
+                    LOG_E("[  FAILED  ] [ result   ] testcase (%s)\n", tc_table[i].name);
                     goto __tc_continue;
                 }
             }
 
     __tc_continue:
-            LOG_I("[----------] [ testcase ] (%s) finished", tc_table[i].name);
+            LOG_I("[----------] [ testcase ] (%s) finished\n", tc_table[i].name);
 
             i++;
         }
 
         if (i == tc_num && is_find == RT_FALSE)
         {
-            LOG_I("[==========] [ utest    ] Not find (%s)", utest_name);
-            LOG_I("[==========] [ utest    ] finished");
+            LOG_I("[==========] [ utest    ] Not find (%s)\n", utest_name);
+            LOG_I("[==========] [ utest    ] finished\n");
             break;
         }
 
-        LOG_I("[==========] [ utest    ] finished");
+        LOG_I("[==========] [ utest    ] finished\n");
     }
 }
 
@@ -273,7 +273,7 @@ static void utest_testcase_run(int argc, char** argv)
     }
     else
     {
-        LOG_E("[  error   ] at (%s:%d), in param error.", __func__, __LINE__);
+        LOG_E("[  error   ] at (%s:%d), in param error.\n", __func__, __LINE__);
         utest_help();
     }
 }
@@ -303,13 +303,13 @@ void utest_assert(int value, const char *file, int line, const char *func, const
     {
         local_utest.error = UTEST_FAILED;
         local_utest.failed_num ++;
-        LOG_E("[  ASSERT  ] [ unit     ] at (%s); func: (%s:%d); msg: (%s)", file_basename(file), func, line, msg);
+        LOG_E("[  ASSERT  ] [ unit     ] at (%s); func: (%s:%d); msg: (%s)\n", file_basename(file), func, line, msg);
     }
     else
     {
         if (utest_log_lv == UTEST_LOG_ALL)
         {
-            LOG_D("[    OK    ] [ unit     ] (%s:%d) is passed", func, line);
+            LOG_D("[    OK    ] [ unit     ] (%s:%d) is passed\n", func, line);
         }
         local_utest.error = UTEST_PASSED;
         local_utest.passed_num ++;

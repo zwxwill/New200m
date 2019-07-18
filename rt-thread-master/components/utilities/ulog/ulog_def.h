@@ -171,7 +171,7 @@ extern "C" {
 #endif
 
 #ifndef ULOG_NEWLINE_SIGN
-#define ULOG_NEWLINE_SIGN              "\r\n"
+#define ULOG_NEWLINE_SIGN              ""
 #endif
 
 #define ULOG_FRAME_MAGIC               0x10

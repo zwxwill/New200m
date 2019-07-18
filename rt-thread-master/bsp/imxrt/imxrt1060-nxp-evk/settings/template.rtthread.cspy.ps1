@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" --backend -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
+& "H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" --backend -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
 }
 else
 {
-& "H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" --debug_file=$debugfile --backend -f "H:\MyWork\69_New200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
+& "H:\Program Files (x86)\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.general.xcl" --debug_file=$debugfile --backend -f "H:\MyWork\75_Rt-ThreadNew200m\rt-thread-master\bsp\imxrt\imxrt1060-nxp-evk\settings\template.rtthread.driver.xcl" 
 }

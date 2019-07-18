@@ -333,9 +333,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--library_interface=armcc --library_type=standardlib --diag_suppress=66,1296,186</MiscControls>
-              <Define>CPU_MIMXRT1062DVL6A, XIP_EXTERNAL_FLASH=1, RT_USING_ARM_LIBC, XIP_BOOT_HEADER_ENABLE=1,FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1,</Define>
+              <Define>CPU_MIMXRT1062DVL6A, XIP_EXTERNAL_FLASH=1, RT_USING_ARM_LIBC, XIP_BOOT_HEADER_ENABLE=1</Define>
               <Undefine></Undefine>
-              <IncludePath>.;..\..\..\include;applications;board;board\MCUX_Config;board\xip;board\ports;..\Libraries\drivers;..\Libraries\drivers\config;board;..\Libraries\MIMXRT1060;board;test;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m7;..\..\..\components\dfs\include;..\..\..\components\dfs\filesystems\devfs;..\..\..\components\dfs\filesystems\elmfat;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\finsh;..\..\..\components\libc\compilers\armlibc;..\..\..\components\libc\compilers\common;..\Libraries\MIMXRT1060\CMSIS\Include;..\Libraries\MIMXRT1060\MIMXRT1062;..\Libraries\MIMXRT1060\MIMXRT1062\drivers;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\inc;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port</IncludePath>
+              <IncludePath>.;..\..\..\include;applications;board;board\MCUX_Config;board\xip;board\ports;..\Libraries\drivers;..\Libraries\drivers\config;board;..\Libraries\MIMXRT1060;board;test;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m7;..\..\..\components\dfs\include;..\..\..\components\dfs\filesystems\devfs;..\..\..\components\dfs\filesystems\elmfat;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\drivers\include;..\..\..\components\finsh;..\..\..\components\libc\compilers\armlibc;..\..\..\components\libc\compilers\common;..\..\..\components\utilities\ulog;..\..\..\components\utilities\utest;..\Libraries\MIMXRT1060\CMSIS\Include;..\Libraries\MIMXRT1060\MIMXRT1062;..\Libraries\MIMXRT1060\MIMXRT1062\drivers;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\inc;..\Libraries\MIMXRT1060\MIMXRT1062\middleware\sdmmc\port</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -574,19 +574,34 @@
           <GroupName>test</GroupName>
           <Files>
             <File>
+              <FileName>test_fatfs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>test\test_fatfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>test\test_log.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_performance.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>test\test_performance.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_sd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>test\test_sd.c</FilePath>
+            </File>
+            <File>
               <FileName>test_sem.c</FileName>
               <FileType>1</FileType>
               <FilePath>test\test_sem.c</FilePath>
             </File>
             <File>
-              <FileName>test_performance.c</FileName>
+              <FileName>test_utest.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\test\test_performance.c</FilePath>
-            </File>
-            <File>
-              <FileName>test_sd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test\test_sd.c</FilePath>
+              <FilePath>test\test_utest.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -832,6 +847,31 @@
               <FileName>gmtime_r.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\components\libc\compilers\common\gmtime_r.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utilities</GroupName>
+          <Files>
+            <File>
+              <FileName>ulog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\utilities\ulog\ulog.c</FilePath>
+            </File>
+            <File>
+              <FileName>console_be.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\utilities\ulog\backend\console_be.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>utest</GroupName>
+          <Files>
+            <File>
+              <FileName>utest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\components\utilities\utest\utest.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -6,11 +6,11 @@
  * Change Logs:
  * Date           Author       Notes
  * 2019-04-29     tyustli      first version
- */
+ */  
 
 #include <rtdevice.h>
-
-
+ 
+  
 extern void app_led(void* parameter);
 extern void app_sd(void* parameter);
 
@@ -41,7 +41,6 @@ void app_create(void)
 
 int main(void)
 {
-	rt_uint32_t result;
 	/* application create */
 	app_create();
 
