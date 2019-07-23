@@ -1,7 +1,9 @@
 /*
  * Copyright 2019 ZWX
  * All rights reserved.
- *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2019-07-19     zwx          first implementatio
  */
 
 #include <rtthread.h>
@@ -249,7 +251,7 @@ int rt_hw_sd_Init(void)
                             CardDetectTask,    /* thread entry */
 	                        (void*)0,   /* thread parameter */
 							512,        /* thread stack size : byte */
-                            RT_THREAD_PRIORITY_MAX - 3, /* thread priority : 0 is the max high priority */
+                            RT_THREAD_PRIORITY_MAX - 4, /* thread priority : 0 is the max high priority */
 							5); /* thread tick : when thread priority is same */	
     if (tid != RT_NULL)
         rt_thread_startup(tid);							

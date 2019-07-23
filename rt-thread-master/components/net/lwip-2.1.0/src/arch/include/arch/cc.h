@@ -47,7 +47,7 @@
 
 #ifdef RT_USING_LIBC
 #if defined(__CC_ARM) || defined(__CLANG_ARM) || defined(__IAR_SYSTEMS_ICC__)
-#include <sys/errno.h>
+#include <lwip/errno.h>
 #else
 #include <errno.h>
 /* some errno not defined in newlib */

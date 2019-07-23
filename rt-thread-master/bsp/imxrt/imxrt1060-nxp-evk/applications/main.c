@@ -23,7 +23,7 @@ void app_create(void)
                             app_led,    /* thread entry */
 	                        (void*)0,   /* thread parameter */
 							512,        /* thread stack size : byte */
-                            RT_THREAD_PRIORITY_MAX - 1, /* thread priority : 0 is the max high priority */
+                            RT_THREAD_PRIORITY_MAX - 5, /* thread priority : 0 is the max high priority */
 							5); /* thread tick : when thread priority is same */
     if (tid != RT_NULL)
         rt_thread_startup(tid);		
@@ -32,7 +32,7 @@ void app_create(void)
     tid = rt_thread_create("app_sd",   /* thread name */
                             app_sd,    /* thread entry */
 	                        (void*)0,   /* thread parameter */
-							1024,        /* thread stack size : byte */
+							2048,        /* thread stack size : byte */
                             RT_THREAD_PRIORITY_MAX - 3, /* thread priority : 0 is the max high priority */
 							5); /* thread tick : when thread priority is same */
     if (tid != RT_NULL)

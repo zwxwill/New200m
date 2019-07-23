@@ -129,7 +129,12 @@ menu "On-chip Peripheral Drivers"
 		
     config BSP_USING_SD
         bool "Enable SD"
-        default n			
+        default n	
+
+	config BSP_USING_ETH
+		bool "Enable ETH"
+		select RT_USING_LWIP
+		default n
 		
 endmenu
 

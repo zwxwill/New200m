@@ -27,7 +27,7 @@ static void ulog_sdlog_backend_output(struct ulog_backend *backend, rt_uint32_t 
 	uint8_t *buf_8 = (uint8_t *)log;
 	int fd, size;
 		
-#if 1		
+#if 0		
 	rt_kprintf("\nflash save: ");	
 	for(i=0; i<len; i++)
 	{
@@ -44,7 +44,6 @@ static void ulog_sdlog_backend_output(struct ulog_backend *backend, rt_uint32_t 
 	    {
 	        write(fd, buf_8, len);
 	        close(fd);
-	        rt_kprintf("Write done.\n");
 	    }		
 	}
 
