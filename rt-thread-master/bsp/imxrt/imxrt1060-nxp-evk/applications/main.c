@@ -43,7 +43,7 @@ int main(void)
 {
 	/* application create */
 	app_create();
-
+	
     while (1)
     {
         rt_thread_mdelay(500);

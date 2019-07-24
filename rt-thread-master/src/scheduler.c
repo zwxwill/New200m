@@ -51,6 +51,7 @@ struct rt_thread *rt_current_thread;
 rt_uint8_t rt_current_priority;
 #endif /*RT_USING_SMP*/
 
+rt_uint8_t rt_schedule_start_flg = 0;
 rt_list_t rt_thread_defunct;
 
 #ifdef RT_USING_HOOK
@@ -258,6 +259,7 @@ void rt_system_scheduler_start(void)
 
     rt_schedule_remove_thread(to_thread);
     to_thread->stat = RT_THREAD_RUNNING;
+	rt_schedule_start_flg = 1;
 
     /* switch to new thread */
 #ifdef RT_USING_SMP

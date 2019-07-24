@@ -42,7 +42,11 @@ AT_NONCACHEABLE_SECTION_ALIGN(static enet_tx_bd_struct_t g_txBuffDescrip[ENET_TX
 ALIGN(ENET_BUFF_ALIGNMENT) rt_uint8_t g_txDataBuff[ENET_TXBD_NUM][RT_ALIGN(ENET_TXBUFF_SIZE, ENET_BUFF_ALIGNMENT)];
 ALIGN(ENET_BUFF_ALIGNMENT) rt_uint8_t g_rxDataBuff[ENET_RXBD_NUM][RT_ALIGN(ENET_RXBUFF_SIZE, ENET_BUFF_ALIGNMENT)];
 
-
+/*  Defines Ethernet Autonegotiation Timeout during initialization. 
+ *  Set it to 0 to disable the waiting. */ 
+#ifndef ENET_ATONEGOTIATION_TIMEOUT
+    #define ENET_ATONEGOTIATION_TIMEOUT     (0xFFFU)
+#endif
 
 struct rt_imxrt_eth
 {
@@ -63,7 +67,7 @@ struct rt_imxrt_eth
 
 
 static struct rt_imxrt_eth imxrt_eth_device;
-
+uint8_t g_drv_eth_en = 0;
 
 static void delay(void)
 {
@@ -80,6 +84,20 @@ static void enet_io_init(void)
 	
     GPIO_PinInit(GPIO1, 9, &gpio_config);
     GPIO_PinInit(GPIO1, 10, &gpio_config);
+
+	IOMUXC_SetPinMux(
+		IOMUXC_GPIO_B1_10_ENET_REF_CLK,         /* GPIO_B1_10 is configured as ENET_REF_CLK */
+		1U);  	                                /* zwx set REF_CLK as output pin */
+	IOMUXC_SetPinConfig(
+		IOMUXC_GPIO_B1_10_ENET_REF_CLK,         /* GPIO_B1_10 PAD functional properties : */
+		0x31U);                                 /* Slew Rate Field: Fast Slew Rate
+												 Drive Strength Field: R0/6
+												 Speed Field: low(50MHz)
+												 Open Drain Enable Field: Open Drain Disabled
+												 Pull / Keep Enable Field: Pull/Keeper Disabled
+												 Pull / Keep Select Field: Keeper
+												 Pull Up / Down Config. Field: 100K Ohm Pull Down
+												 Hyst. Enable Field: Hysteresis Disabled */	
 }
 
 static void enet_clk_init(void)
@@ -133,6 +151,65 @@ static void enet_callback(ENET_Type *base, enet_handle_t *handle, enet_event_t e
 }
 
 
+static void ethernetif_phy_init(ENET_Type *base, uint32_t phyAddr, uint32_t srcClock_Hz)
+{
+    uint32_t sysClock;
+    status_t status;
+    bool link = false;
+    uint32_t count = 0;
+    phy_speed_t speed;
+    phy_duplex_t duplex;
+
+    LOG_D(("Initializing PHY...\n"));
+
+    while ((count < ENET_ATONEGOTIATION_TIMEOUT) && (!link))
+    {
+        status = PHY_Init(base, phyAddr, srcClock_Hz);
+
+        if (kStatus_Success == status)
+        {
+            PHY_GetLinkStatus(base, phyAddr, &link);
+			LOG_D("PHY Auto-negotiation ok.\n");
+        }
+        else if (kStatus_PHY_AutoNegotiateFail == status)
+        {
+            LOG_E(("PHY Auto-negotiation failed. Please check the ENET cable connection and link partner setting.\n"));
+        }
+        else
+        {
+            LOG_E("\r\nCannot initialize PHY.\r\n", 0);
+        }
+
+        count++;
+    }
+
+    if (link)
+    {
+        /* Get the actual PHY link speed. */
+        PHY_GetLinkSpeedDuplex(base, phyAddr, &speed, &duplex);
+        /* Change the MII speed and duplex for actual link status. */
+        imxrt_eth_device.speed = (enet_mii_speed_t)speed;
+        imxrt_eth_device.duplex = (enet_mii_duplex_t)duplex;
+		if (kPHY_Speed10M == speed)
+		{
+			LOG_D("eth speed : 10M\n");
+		}
+		else
+		{
+			LOG_D("eth speed : 100M\n");
+		}         
+
+		if (kPHY_HalfDuplex == duplex)
+		{
+			LOG_D("eth duplex : half dumplex\n");
+		}
+		else
+		{
+			LOG_D("eth duplex : full dumplex\n");
+		}				
+    }
+}
+
 /* initialize enet */
 static void enet_config(void)
 {
@@ -157,15 +234,13 @@ static void enet_config(void)
         &g_txDataBuff[0][0],
     };	
 	
-	
-
 	sysClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
 	
     ENET_GetDefaultConfig(&config);
     config.ringNum = ENET_RING_NUM;
     config.miiSpeed = imxrt_eth_device.speed;
     config.miiDuplex = imxrt_eth_device.duplex;
-	
+
 #ifdef RT_LWIP_USING_HW_CHECKSUM
 	config.rxAccelerConfig = ENET_RACC_PRODIS_MASK | ENET_RACC_IPDIS_MASK;
 	config.txAccelerConfig = ENET_TACC_IPCHK_MASK | ENET_TACC_PROCHK_MASK;
@@ -181,14 +256,13 @@ static void enet_config(void)
             NVIC_SetPriority(enetTxIrqId[instance], ENET_PRIORITY);			
 		}
 	}
-    LOG_D("deinit\n");
-    ENET_Deinit(imxrt_eth_device.enet_base);
+
     LOG_D("init\n");
     ENET_Init(imxrt_eth_device.enet_base, &imxrt_eth_device.enet_handle, &config, &buffConfig, &imxrt_eth_device.dev_addr[0], sysClock);
     LOG_D("set call back\n");
     ENET_SetCallback(&imxrt_eth_device.enet_handle, enet_callback, &imxrt_eth_device);
     LOG_D("active read\n");
-    ENET_ActiveRead(imxrt_eth_device.enet_base);	
+    ENET_ActiveRead(imxrt_eth_device.enet_base);
 }
 
 /* initialize the interface */
@@ -260,7 +334,7 @@ static rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
 	RT_ASSERT(p != NULL);
 	RT_ASSERT(enet_handle != RT_NULL);
 
-	LOG_D("rt_imxrt_eth_tx: %d", p->len);
+//	LOG_D("rt_imxrt_eth_tx: %d\n", p->len);
 	
 #ifdef ETH_TX_DUMP
 	packet_dump("send", p);
@@ -353,11 +427,10 @@ static void phy_monitor_thread_entry(void *parameter)
     phy_speed_t speed;
     phy_duplex_t duplex;	
 
-	enet_phy_reset_by_gpio();
-	PHY_Init(imxrt_eth_device.enet_base, PHY_ADDRESS, CLOCK_GetFreq(kCLOCK_CoreSysClk));
+	rt_PHY_Init(imxrt_eth_device.enet_base, PHY_ADDRESS, CLOCK_GetFreq(kCLOCK_CoreSysClk));
 
 	while(1)
-	{
+	{	
 		status = PHY_GetLinkStatus(imxrt_eth_device.enet_base, PHY_ADDRESS, &new_link);
 		if ((status == kStatus_Success) && (link != new_link))
 		{
@@ -415,6 +488,7 @@ static int rt_hw_imxrt_eth_init(void)
 	
 	enet_io_init();
 	enet_clk_init();
+	enet_phy_reset_by_gpio();
 
     imxrt_eth_device.dev_addr[0] = 0x02;
     imxrt_eth_device.dev_addr[1] = 0x12;
@@ -453,7 +527,11 @@ static int rt_hw_imxrt_eth_init(void)
     else
     {
         LOG_D("eth_device_init faild: %d\r\n", state);
-    }	
+    }
+
+	g_drv_eth_en = 1; /* eth rst pin is conflict with led pin */
+	
+//	eth_device_linkchange(&imxrt_eth_device.parent, RT_FALSE);
 
     /* start phy monitor */
     {
@@ -472,11 +550,70 @@ static int rt_hw_imxrt_eth_init(void)
 }
 
 
-INIT_ENV_EXPORT(rt_hw_imxrt_eth_init);
+INIT_DEVICE_EXPORT(rt_hw_imxrt_eth_init);
 
+#ifdef FINSH_USING_MSH
 
+void phy_read(uint32_t phyReg)
+{
+    uint32_t data;
+    status_t status;
 
+    status = PHY_Read(imxrt_eth_device.enet_base, PHY_ADDRESS, phyReg, &data);
+    if (kStatus_Success == status)
+    {
+        rt_kprintf("PHY_Read: %02X --> %08X", phyReg, data);
+    }
+    else
+    {
+        rt_kprintf("PHY_Read: %02X --> faild", phyReg);
+    }
+}
 
+void phy_write(uint32_t phyReg, uint32_t data)
+{
+    status_t status;
+
+    status = PHY_Write(imxrt_eth_device.enet_base, PHY_ADDRESS, phyReg, data);
+    if (kStatus_Success == status)
+    {
+        rt_kprintf("PHY_Write: %02X --> %08X\n", phyReg, data);
+    }
+    else
+    {
+        rt_kprintf("PHY_Write: %02X --> faild\n", phyReg);
+    }
+}
+
+void phy_state(void)
+{
+    phy_speed_t speed;
+    phy_duplex_t duplex;	
+	
+	PHY_GetLinkSpeedDuplex(imxrt_eth_device.enet_base, PHY_ADDRESS, &speed, &duplex);	
+	if (kPHY_Speed10M == speed)
+	{
+		rt_kprintf("[PHY] eth speed : 10M\n");
+	}
+	else
+	{
+		rt_kprintf("[PHY] eth speed : 100M\n");
+	}         
+
+	if (kPHY_HalfDuplex == duplex)
+	{
+		rt_kprintf("[PHY] eth duplex : half dumplex\n");
+	}
+	else
+	{
+		rt_kprintf("[PHY] eth duplex : full dumplex\n");
+	}		
+}
+
+MSH_CMD_EXPORT(phy_read, phy_read);
+MSH_CMD_EXPORT(phy_write, phy_write);
+MSH_CMD_EXPORT(phy_state, phy_state);
+#endif
 
 
 

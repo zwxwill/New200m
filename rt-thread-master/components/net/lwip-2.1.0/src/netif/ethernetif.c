@@ -584,12 +584,15 @@ rt_err_t eth_device_linkchange(struct eth_device* dev, rt_bool_t up)
 static void eth_tx_thread_entry(void* parameter)
 {
     struct eth_tx_msg* msg;
+	struct eth_device* enetif;
 
     while (1)
     {
         if (rt_mb_recv(&eth_tx_thread_mb, (rt_ubase_t *)&msg, RT_WAITING_FOREVER) == RT_EOK)
         {
-            struct eth_device* enetif;
+//extern void phy_state(void);
+//phy_state();	
+            
 
             RT_ASSERT(msg->netif != RT_NULL);
             RT_ASSERT(msg->buf   != RT_NULL);
@@ -616,13 +619,12 @@ static void eth_tx_thread_entry(void* parameter)
 static void eth_rx_thread_entry(void* parameter)
 {
     struct eth_device* device;
+	struct pbuf *p;
 
     while (1)
     {
         if (rt_mb_recv(&eth_rx_thread_mb, (rt_ubase_t *)&device, RT_WAITING_FOREVER) == RT_EOK)
         {
-            struct pbuf *p;
-
             /* check link status */
             if (device->link_changed)
             {

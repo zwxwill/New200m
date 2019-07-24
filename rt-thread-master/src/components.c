@@ -182,6 +182,7 @@ void main_thread_entry(void *parameter)
 #define INIT_ENV_EXPORT(fn)             INIT_EXPORT(fn, "5")
 #define INIT_APP_EXPORT(fn)             INIT_EXPORT(fn, "6")
 */
+
     /* RT-Thread components initialization */
     rt_components_init();
 

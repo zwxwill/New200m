@@ -7,6 +7,7 @@
  */
 
 #include "fsl_phy.h"
+#include "rtthread.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -126,6 +127,96 @@ status_t PHY_Init(ENET_Type *base, uint32_t phyAddr, uint32_t srcClock_Hz)
 
     return result;
 }
+
+status_t rt_PHY_Init(ENET_Type *base, uint32_t phyAddr, uint32_t srcClock_Hz)
+{
+    uint32_t bssReg;
+    uint32_t counter = PHY_TIMEOUT_COUNT;
+    uint32_t idReg = 0;
+    status_t result = kStatus_Success;
+    uint32_t instance = ENET_GetInstance(base);
+    uint32_t timeDelay;
+    uint32_t ctlReg = 0;
+
+#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
+    /* Set SMI first. */
+    CLOCK_EnableClock(s_enetClock[instance]);
+#endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
+    ENET_SetSMI(base, srcClock_Hz, false);
+
+    /* Initialization after PHY stars to work. */
+    while ((idReg != PHY_CONTROL_ID1) && (counter != 0))
+    {
+        PHY_Read(base, phyAddr, PHY_ID1_REG, &idReg);
+        counter --;       
+    }
+
+    if (!counter)
+    {
+        return kStatus_Fail;
+    }
+
+    /* Reset PHY. */
+    counter = 6;
+    result = PHY_Write(base, phyAddr, PHY_BASICCONTROL_REG, PHY_BCTL_RESET_MASK);
+    if (result == kStatus_Success)
+    {
+        uint32_t data = 0;
+        result = PHY_Read(base, phyAddr, PHY_CONTROL2_REG, &data);
+        if ( result != kStatus_Success)
+        {
+            return result;
+        }
+        result = PHY_Write(base, phyAddr, PHY_CONTROL2_REG, (data | PHY_CTL2_REFCLK_SELECT_MASK));
+        if (result != kStatus_Success)
+        {
+            return result;
+        }   
+        
+        /* Set the negotiation. */
+        result = PHY_Write(base, phyAddr, PHY_AUTONEG_ADVERTISE_REG,
+                           (PHY_100BASETX_FULLDUPLEX_MASK | PHY_100BASETX_HALFDUPLEX_MASK |
+                            PHY_10BASETX_FULLDUPLEX_MASK | PHY_10BASETX_HALFDUPLEX_MASK | 0x1U));
+        if (result == kStatus_Success)
+        {
+            result = PHY_Write(base, phyAddr, PHY_BASICCONTROL_REG,
+                               (PHY_BCTL_AUTONEG_MASK | PHY_BCTL_RESTART_AUTONEG_MASK));
+            if (result == kStatus_Success)
+            {
+                /* Check auto negotiation complete. */
+                while (counter --)
+                {
+                    result = PHY_Read(base, phyAddr, PHY_BASICSTATUS_REG, &bssReg);
+                    if ( result == kStatus_Success)
+                    {
+                        PHY_Read(base, phyAddr, PHY_CONTROL1_REG, &ctlReg);
+                        if (((bssReg & PHY_BSTATUS_AUTONEGCOMP_MASK) != 0) && (ctlReg & PHY_LINK_READY_MASK))
+                        {
+                            /* Wait a moment for Phy status stable. */
+                            for (timeDelay = 0; timeDelay < PHY_TIMEOUT_COUNT; timeDelay ++)
+                            {
+                                __ASM("nop");
+                            }
+							rt_kprintf("[PHY] auto negotiation complete success\n");
+                            break;
+                        }
+                    }
+					
+                    rt_kprintf("[PHY] wait autonegotiation complete...\n");
+                    rt_thread_delay(RT_TICK_PER_SECOND);					
+
+                    if (!counter)
+                    {
+                        return kStatus_PHY_AutoNegotiateFail;
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
 
 status_t PHY_Write(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, uint32_t data)
 {

@@ -80,6 +80,8 @@ int utest_init(void)
 
     LOG_I("utest is initialize success.\n");
     LOG_I("total utest testcase num: (%d)\n", tc_num);
+	
+
     return tc_num;
 }
 INIT_COMPONENT_EXPORT(utest_init);

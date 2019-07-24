@@ -122,7 +122,7 @@ extern "C" {
  * @retval kStatus_PHY_AutoNegotiateFail  PHY auto negotiate fail
  */
 status_t PHY_Init(ENET_Type *base, uint32_t phyAddr, uint32_t srcClock_Hz);
-
+status_t rt_PHY_Init(ENET_Type *base, uint32_t phyAddr, uint32_t srcClock_Hz);
 /*!
  * @brief PHY Write function. This function write data over the SMI to
  * the specified PHY register. This function is called by all PHY interfaces.

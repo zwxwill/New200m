@@ -156,7 +156,7 @@ int rt_hw_rtc_init(void)
 	}
 
     rt_device_open(&device, RT_DEVICE_OFLAG_RDWR);
-
+	
     return RT_EOK;
 }
 
