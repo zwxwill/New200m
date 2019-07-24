@@ -68,7 +68,7 @@ bool SDMMCEVENT_Create(sdmmc_event_t eventType)
     {
 		semNo++;
 		rt_sprintf(name, "SDSem%d", semNo);
-        *event = rt_sem_create("SD", 0, RT_IPC_FLAG_FIFO);
+        *event = rt_sem_create(name, 0, RT_IPC_FLAG_FIFO);
         if (*event == NULL)
         {
             return false;

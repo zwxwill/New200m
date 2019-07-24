@@ -35,16 +35,16 @@ int rt_hw_sdram_Init(void)
       IOMUXC_GPIO_EMC_39_SEMC_DQS,            /* GPIO_EMC_39 is configured as SEMC_DQS */
       1U); 	/* modify by [zwx], because mcupress config tool can't select as input function in this pin */
 
-	IOMUXC_SetPinConfig(
-	  IOMUXC_GPIO_EMC_29_SEMC_CS0,            /* GPIO_EMC_29 PAD functional properties : */
-	  0x0110F9U);                             /* Slew Rate Field: Fast Slew Rate
-												 Drive Strength Field: R0/7
-												 Speed Field: max(200MHz)
-												 Open Drain Enable Field: Open Drain Disabled
-												 Pull / Keep Enable Field: Pull/Keeper Enabled
-												 Pull / Keep Select Field: Keeper
-												 Pull Up / Down Config. Field: 100K Ohm Pull Down
-												 Hyst. Enable Field: Hysteresis Enabled */	
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_39_SEMC_DQS,            /* GPIO_EMC_39 PAD functional properties : */
+      0x0110F9u);                             /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: R0/7
+                                                 Speed Field: max(200MHz)
+                                                 Open Drain Enable Field: Open Drain Disabled
+                                                 Pull / Keep Enable Field: Pull/Keeper Enabled
+                                                 Pull / Keep Select Field: Keeper
+                                                 Pull Up / Down Config. Field: 100K Ohm Pull Down
+                                                 Hyst. Enable Field: Hysteresis Enabled */
 	
     /* Initializes the MAC configure structure to zero. */
     memset(&config, 0, sizeof(semc_config_t));

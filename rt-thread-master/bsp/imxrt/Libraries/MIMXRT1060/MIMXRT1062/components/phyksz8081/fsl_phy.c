@@ -72,7 +72,7 @@ status_t PHY_Init(ENET_Type *base, uint32_t phyAddr, uint32_t srcClock_Hz)
     result = PHY_Write(base, phyAddr, PHY_BASICCONTROL_REG, PHY_BCTL_RESET_MASK);
     if (result == kStatus_Success)
     {
-
+#define FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE
 #if defined(FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE)
         uint32_t data = 0;
         result = PHY_Read(base, phyAddr, PHY_CONTROL2_REG, &data);

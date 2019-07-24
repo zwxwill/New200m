@@ -24,6 +24,8 @@
                <pin_label pin_num="K14" pin_signal="GPIO_AD_B0_12" label="UART1_TXD"/>
                <pin_label pin_num="D13" pin_signal="GPIO_B1_12" label="SD_CD_SW" identifier="SD_CD_SW"/>
                <pin_label pin_num="M12" pin_signal="GPIO_AD_B1_03" label="SD_PWREN" identifier="SD_PWREN"/>
+               <pin_label pin_num="F14" pin_signal="GPIO_AD_B0_09" label="ENET_RST"/>
+               <pin_label pin_num="G13" pin_signal="GPIO_AD_B0_10" label="ENET_INT"/>
             </pin_labels>
          </pins_profile>
          <functions_list>
@@ -51,6 +53,11 @@
                      </feature>
                   </dependency>
                   <dependency resourceType="Peripheral" resourceId="GPIO2" description="Peripheral GPIO2 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="Peripheral" resourceId="ENET" description="Peripheral ENET is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -371,14 +378,6 @@
                         <pin_feature name="slew_rate" value="Fast"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="SEMC" signal="semc_dqs" pin_num="B7" pin_signal="GPIO_EMC_39">
-                     <pin_features>
-                        <pin_feature name="hysteresis_enable" value="Enable"/>
-                        <pin_feature name="speed" value="MHZ_200"/>
-                        <pin_feature name="drive_strength" value="R0_7"/>
-                        <pin_feature name="slew_rate" value="Fast"/>
-                     </pin_features>
-                  </pin>
                   <pin peripheral="SEMC" signal="DM, 1" pin_num="D6" pin_signal="GPIO_EMC_38">
                      <pin_features>
                         <pin_feature name="hysteresis_enable" value="Enable"/>
@@ -465,6 +464,108 @@
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
                         <pin_feature name="gpio_init_state" value="true"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_rx_data, 0" pin_num="E12" pin_signal="GPIO_B1_04">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_rx_data, 1" pin_num="D12" pin_signal="GPIO_B1_05">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_rx_en" pin_num="C12" pin_signal="GPIO_B1_06">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_tx_data, 0" pin_num="B12" pin_signal="GPIO_B1_07">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_tx_data, 1" pin_num="A12" pin_signal="GPIO_B1_08">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_tx_en" pin_num="A13" pin_signal="GPIO_B1_09">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_ref_clk" pin_num="B13" pin_signal="GPIO_B1_10">
+                     <pin_features>
+                        <pin_feature name="pull_keeper_enable" value="Disable"/>
+                        <pin_feature name="speed" value="MHZ_50"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_rx_er" pin_num="C13" pin_signal="GPIO_B1_11">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_mdc" pin_num="A7" pin_signal="GPIO_EMC_40">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="speed" value="MHZ_200"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="ENET" signal="enet_mdio" pin_num="C7" pin_signal="GPIO_EMC_41">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="open_drain" value="Enable"/>
+                        <pin_feature name="speed" value="MHZ_50"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="GPIO1" signal="gpio_io, 09" pin_num="F14" pin_signal="GPIO_AD_B0_09">
+                     <pin_features>
+                        <pin_feature name="pull_up_down_config" value="Pull_Up_100K_Ohm"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
+                        <pin_feature name="slew_rate" value="Fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="GPIO1" signal="gpio_io, 10" pin_num="G13" pin_signal="GPIO_AD_B0_10">
+                     <pin_features>
+                        <pin_feature name="pull_keeper_select" value="Pull"/>
+                        <pin_feature name="drive_strength" value="R0_5"/>
                      </pin_features>
                   </pin>
                </pins>

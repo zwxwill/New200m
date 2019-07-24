@@ -58,10 +58,7 @@ outputs:
 - {id: CLK_24M.outFreq, value: 24 MHz}
 - {id: CSI_CLK_ROOT.outFreq, value: 12 MHz}
 - {id: ENET1_TX_CLK.outFreq, value: 2.4 MHz}
-- {id: ENET2_125M_CLK.outFreq, value: 1.2 MHz}
-- {id: ENET2_TX_CLK.outFreq, value: 1.2 MHz}
 - {id: ENET_125M_CLK.outFreq, value: 2.4 MHz}
-- {id: ENET_25M_REF_CLK.outFreq, value: 1.2 MHz}
 - {id: FLEXIO1_CLK_ROOT.outFreq, value: 30 MHz}
 - {id: FLEXIO2_CLK_ROOT.outFreq, value: 30 MHz}
 - {id: FLEXSPI2_CLK_ROOT.outFreq, value: 264 MHz}
@@ -116,6 +113,8 @@ settings:
 - {id: CCM_ANALOG.PLL3_PFD1_BYPASS.sel, value: CCM_ANALOG.PLL3_PFD1}
 - {id: CCM_ANALOG.PLL3_PFD2_BYPASS.sel, value: CCM_ANALOG.PLL3_PFD2}
 - {id: CCM_ANALOG.PLL3_PFD3_BYPASS.sel, value: CCM_ANALOG.PLL3_PFD3}
+- {id: CCM_ANALOG_PLL_ENET_ENET2_REF_EN_CFG, value: Disabled}
+- {id: CCM_ANALOG_PLL_ENET_ENET_25M_REF_EN_CFG, value: Disabled}
 - {id: CCM_ANALOG_PLL_USB1_POWER_CFG, value: 'Yes'}
 sources:
 - {id: XTALOSC24M.OSC.outFreq, value: 24 MHz, enabled: true}
@@ -145,8 +144,8 @@ const clock_usb_pll_config_t usb1PllConfig_BOARD_BootClockRUN =
 const clock_enet_pll_config_t enetPllConfig_BOARD_BootClockRUN =
     {
         .enableClkOutput = true,                  /* Enable the PLL providing the ENET 125MHz reference clock */
-        .enableClkOutput1 = true,                 /* Enable the PLL providing the ENET2 125MHz reference clock */
-        .enableClkOutput25M = true,               /* Enable the PLL providing the ENET 25MHz reference clock */
+        .enableClkOutput1 = false,                /* Disable the PLL providing the ENET2 125MHz reference clock */
+        .enableClkOutput25M = false,              /* Disable the PLL providing the ENET 25MHz reference clock */
         .loopDivider = 1,                         /* Set frequency of ethernet reference clock to 2.4 MHz */
         .loopDivider1 = 0,                        /* Set frequency of ethernet reference clock to 1.2 MHz */
         .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */

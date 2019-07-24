@@ -84,7 +84,14 @@ static void enet_io_init(void)
 
 static void enet_clk_init(void)
 {
-	CLOCK_EnableClock(kCLOCK_Iomuxc); 
+    const clock_enet_pll_config_t config = 
+    {
+		.enableClkOutput = true,
+		.enableClkOutput25M = false,
+	     .loopDivider = 1
+	};
+    CLOCK_InitEnetPll(&config);
+	
 	IOMUXC_EnableMode(IOMUXC_GPR, kIOMUXC_GPR_ENET1TxClkOutputDir, true);
 }
 
@@ -149,6 +156,8 @@ static void enet_config(void)
         &g_rxDataBuff[0][0],
         &g_txDataBuff[0][0],
     };	
+	
+	
 
 	sysClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
 	
@@ -343,9 +352,8 @@ static void phy_monitor_thread_entry(void *parameter)
 	bool new_link = false;
     phy_speed_t speed;
     phy_duplex_t duplex;	
-	
-	enet_phy_reset_by_gpio();
 
+	enet_phy_reset_by_gpio();
 	PHY_Init(imxrt_eth_device.enet_base, PHY_ADDRESS, CLOCK_GetFreq(kCLOCK_CoreSysClk));
 
 	while(1)
@@ -408,9 +416,9 @@ static int rt_hw_imxrt_eth_init(void)
 	enet_io_init();
 	enet_clk_init();
 
-    imxrt_eth_device.dev_addr[0] = 0x01;
-    imxrt_eth_device.dev_addr[1] = 0x02;
-    imxrt_eth_device.dev_addr[2] = 0x03;	
+    imxrt_eth_device.dev_addr[0] = 0x02;
+    imxrt_eth_device.dev_addr[1] = 0x12;
+    imxrt_eth_device.dev_addr[2] = 0x13;	
     imxrt_eth_device.dev_addr[3] = 0x66;
     imxrt_eth_device.dev_addr[4] = 0x88;
     imxrt_eth_device.dev_addr[5] = 0x68;
