@@ -47,7 +47,7 @@
 #define RT_USING_COMPONENTS_INIT
 #define RT_USING_USER_MAIN
 #define RT_MAIN_THREAD_STACK_SIZE 2048
-#define RT_MAIN_THREAD_PRIORITY 10
+#define RT_MAIN_THREAD_PRIORITY 3
 
 /* C++ features */
 
@@ -93,6 +93,9 @@
 
 #define RT_USING_DEVICE_IPC
 #define RT_PIPE_BUFSZ 512
+#define RT_USING_SYSTEM_WORKQUEUE
+#define RT_SYSTEM_WORKQUEUE_STACKSIZE 2048
+#define RT_SYSTEM_WORKQUEUE_PRIORITY 23
 #define RT_USING_SERIAL
 #define RT_SERIAL_USING_DMA
 #define RT_SERIAL_RB_BUFSZ 64
@@ -124,6 +127,13 @@
 
 /* Socket abstraction layer */
 
+#define RT_USING_SAL
+
+/* protocol stack implement */
+
+#define SAL_USING_LWIP
+#define SAL_USING_TLS
+#define SAL_USING_POSIX
 
 /* Network interface device */
 
@@ -140,6 +150,9 @@
 #define RT_LWIP_IGMP
 #define RT_LWIP_ICMP
 #define RT_LWIP_DNS
+#define RT_LWIP_DHCP
+#define IP_SOF_BROADCAST 1
+#define IP_SOF_BROADCAST_RECV 1
 
 /* Static IPv4 Address */
 
@@ -157,9 +170,9 @@
 #define RT_LWIP_TCP_SEG_NUM 40
 #define RT_LWIP_TCP_SND_BUF 8196
 #define RT_LWIP_TCP_WND 8196
-#define RT_LWIP_TCPTHREAD_PRIORITY 10
+#define RT_LWIP_TCPTHREAD_PRIORITY 4
 #define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
-#define RT_LWIP_TCPTHREAD_STACKSIZE 1024
+#define RT_LWIP_TCPTHREAD_STACKSIZE 2048
 #define RT_LWIP_ETHTHREAD_PRIORITY 12
 #define RT_LWIP_ETHTHREAD_STACKSIZE 1024
 #define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
@@ -210,6 +223,33 @@
 
 /* IoT - internet of things */
 
+#define PKG_USING_PAHOMQTT
+#define PAHOMQTT_PIPE_MODE
+#define PKG_USING_PAHOMQTT_TEST
+#define MQTT_USING_TLS
+#define RT_PKG_MQTT_THREAD_STACK_SIZE 6144
+#define PKG_PAHOMQTT_SUBSCRIBE_HANDLERS 1
+#define MQTT_DEBUG
+#define PKG_USING_PAHOMQTT_LATEST
+#define PKG_USING_WEBNET
+#define WEBNET_PORT 80
+#define WEBNET_CONN_MAX 16
+#define WEBNET_ROOT "/webnet"
+
+/* Select supported modules */
+
+#define WEBNET_USING_AUTH
+#define WEBNET_USING_CGI
+#define WEBNET_USING_ASP
+#define WEBNET_USING_SSI
+#define WEBNET_USING_INDEX
+#define WEBNET_USING_ALIAS
+#define WEBNET_USING_UPLOAD
+#define WEBNET_CACHE_LEVEL 0
+#define WEBNET_USING_SAMPLES
+#define PKG_USING_WEBNET_LATEST_VERSION
+#define PKG_USING_CJSON
+#define PKG_USING_CJSON_LATEST_VERSION
 
 /* Wi-Fi */
 
@@ -218,12 +258,24 @@
 
 /* Wiced WiFi */
 
+#define PKG_USING_NETUTILS
+#define PKG_NETUTILS_TFTP
+#define NETUTILS_TFTP_PORT 69
+#define PKG_USING_NETUTILS_LATEST_VERSION
 
 /* IoT Cloud */
 
 
 /* security packages */
 
+#define PKG_USING_MBEDTLS
+
+/* Select Root Certificate */
+
+#define MBEDTLS_AES_ROM_TABLES
+#define MBEDTLS_ECP_WINDOW_SIZE 2
+#define MBEDTLS_SSL_MAX_CONTENT_LEN 3584
+#define PKG_USING_MBEDTLS_V260
 
 /* language packages */
 

@@ -223,7 +223,7 @@ src/apps/snmp/snmpv3_mbedtls.c
 
 # 17. ping
 lwipping_SRCS = Split("""
-src/apps/ping/ping.c
+src/apps/ping/lwip_ping.c
 """)
 
 src = Split("""

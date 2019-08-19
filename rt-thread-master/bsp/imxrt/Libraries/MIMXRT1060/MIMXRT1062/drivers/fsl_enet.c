@@ -10,6 +10,7 @@
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
 #include "fsl_cache.h"
 #endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
+#include "lwip/pbuf.h"
 
 /*******************************************************************************
  * Definitions
@@ -905,6 +906,7 @@ static void ENET_ActiveSend(ENET_Type *base, uint32_t ringId)
     }
 }
 
+
 /*!
  * brief Sets the ENET MII speed and duplex.
  *
@@ -1549,6 +1551,152 @@ status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *d
         address = (uint32_t)curBuffDescrip->buffer;
 #endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
         memcpy((void *)address, data, length);
+#if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
+        DCACHE_CleanByRange(address, length);
+#endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
+        /* Set data length. */
+        curBuffDescrip->length = length;
+#ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
+        /* For enable the timestamp. */
+        if (isPtpEventMessage)
+        {
+            curBuffDescrip->controlExtend1 |= ENET_BUFFDESCRIPTOR_TX_TIMESTAMP_MASK;
+        }
+        else
+        {
+            curBuffDescrip->controlExtend1 &= ~ENET_BUFFDESCRIPTOR_TX_TIMESTAMP_MASK;
+        }
+
+#endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
+        curBuffDescrip->control |= (ENET_BUFFDESCRIPTOR_TX_READY_MASK | ENET_BUFFDESCRIPTOR_TX_LAST_MASK);
+
+        /* Increase the buffer descriptor address. */
+        if (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_WRAP_MASK)
+        {
+            handle->txBdCurrent[0] = handle->txBdBase[0];
+        }
+        else
+        {
+            handle->txBdCurrent[0]++;
+        }
+        /* Active the transmit buffer descriptor. */
+        ENET_ActiveSend(base, 0);
+
+        return kStatus_Success;
+    }
+    else
+    {
+        /* One frame requires more than one transmit buffers. */
+        do
+        {
+#ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
+            /* For enable the timestamp. */
+            if (isPtpEventMessage)
+            {
+                curBuffDescrip->controlExtend1 |= ENET_BUFFDESCRIPTOR_TX_TIMESTAMP_MASK;
+            }
+            else
+            {
+                curBuffDescrip->controlExtend1 &= ~ENET_BUFFDESCRIPTOR_TX_TIMESTAMP_MASK;
+            }
+#endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
+
+            /* Increase the buffer descriptor address. */
+            if (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_WRAP_MASK)
+            {
+                handle->txBdCurrent[0] = handle->txBdBase[0];
+            }
+            else
+            {
+                handle->txBdCurrent[0]++;
+            }
+            /* update the size left to be transmit. */
+            sizeleft = length - len;
+#if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
+            address = MEMORY_ConvertMemoryMapAddress((uint32_t)curBuffDescrip->buffer, kMEMORY_DMA2Local);
+#else
+            address = (uint32_t)curBuffDescrip->buffer;
+#endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
+            if (sizeleft > handle->txBuffSizeAlign[0])
+            {
+                /* Data copy. */
+                memcpy((void *)address, data + len, handle->txBuffSizeAlign[0]);
+#if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
+                /* Add the cache clean maintain. */
+                DCACHE_CleanByRange(address, handle->txBuffSizeAlign[0]);
+#endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
+                /* Data length update. */
+                curBuffDescrip->length = handle->txBuffSizeAlign[0];
+                len += handle->txBuffSizeAlign[0];
+                /* Sets the control flag. */
+                curBuffDescrip->control &= ~ENET_BUFFDESCRIPTOR_TX_LAST_MASK;
+                curBuffDescrip->control |= ENET_BUFFDESCRIPTOR_TX_READY_MASK;
+                /* Active the transmit buffer descriptor*/
+                ENET_ActiveSend(base, 0);
+            }
+            else
+            {
+                memcpy((void *)address, data + len, sizeleft);
+#if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
+                /* Add the cache clean maintain. */
+                DCACHE_CleanByRange(address, sizeleft);
+#endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */
+                curBuffDescrip->length = sizeleft;
+                /* Set Last buffer wrap flag. */
+                curBuffDescrip->control |= ENET_BUFFDESCRIPTOR_TX_READY_MASK | ENET_BUFFDESCRIPTOR_TX_LAST_MASK;
+                /* Active the transmit buffer descriptor. */
+                ENET_ActiveSend(base, 0);
+
+                return kStatus_Success;
+            }
+
+            /* Get the current buffer descriptor address. */
+            curBuffDescrip = handle->txBdCurrent[0];
+
+        } while (!(curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_READY_MASK));
+
+        return kStatus_ENET_TxFrameBusy;
+    }
+}
+
+status_t rt_ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *data, uint32_t length)
+{
+    assert(handle);
+    assert(data);
+
+    volatile enet_tx_bd_struct_t *curBuffDescrip;
+    uint32_t len = 0;
+    uint32_t sizeleft = 0;
+    uint32_t address;
+
+    /* Check the frame length. */
+    if (length > ENET_FRAME_MAX_FRAMELEN)
+    {
+        return kStatus_ENET_TxFrameOverLen;
+    }
+
+    /* Check if the transmit buffer is ready. */
+    curBuffDescrip = handle->txBdCurrent[0];
+    if (curBuffDescrip->control & ENET_BUFFDESCRIPTOR_TX_READY_MASK)
+    {
+        return kStatus_ENET_TxFrameBusy;
+    }
+#ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
+    bool isPtpEventMessage = false;
+    /* Check PTP message with the PTP header. */
+    isPtpEventMessage = ENET_Ptp1588ParseFrame(data, NULL, true);
+#endif /* ENET_ENHANCEDBUFFERDESCRIPTOR_MODE */
+    /* One transmit buffer is enough for one frame. */
+    if (handle->txBuffSizeAlign[0] >= length)
+    {
+/* Copy data to the buffer for uDMA transfer. */
+#if defined(FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET) && FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET
+        address = MEMORY_ConvertMemoryMapAddress((uint32_t)curBuffDescrip->buffer, kMEMORY_DMA2Local);
+#else
+        address = (uint32_t)curBuffDescrip->buffer;
+#endif /* FSL_FEATURE_MEMORY_HAS_ADDRESS_OFFSET */
+        //memcpy((void *)address, data, length);
+		pbuf_copy_partial((const struct pbuf *)data, (void *)address, length, 0);
 #if defined(FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL) && FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL
         DCACHE_CleanByRange(address, length);
 #endif /* FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL */

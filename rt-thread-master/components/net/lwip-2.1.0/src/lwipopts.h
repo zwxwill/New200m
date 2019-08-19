@@ -279,12 +279,19 @@
 #define MEMP_NUM_TCP_SEG            TCP_SND_QUEUELEN
 #endif
 
+
+/**
+ * MEMP_NUM_NETDB: the number of concurrently running lwip_addrinfo() calls
+ * (before freeing the corresponding memory using lwip_freeaddrinfo()).
+ */
+#define MEMP_NUM_NETDB                  4
+
 /*
  * You can re-define following setting in rtcofnig.h to overwrite the default
  * setting in the lwip opts.h
  */
 /* MEMP_NUM_NETBUF: the number of struct netbufs. */
-// #define MEMP_NUM_NETBUF             2
+ #define MEMP_NUM_NETBUF             4
 /* MEMP_NUM_NETCONN: the number of struct netconns. */
 // #define MEMP_NUM_NETCONN            4
 
@@ -627,5 +634,7 @@
 #define TFTP_MAX_FILENAME_LEN           64
 #endif
 
+//#define LWIP_DEBUG
+//#define ICMP_DEBUG                      LWIP_DBG_ON
 
 #endif /* __LWIPOPTS_H__ */

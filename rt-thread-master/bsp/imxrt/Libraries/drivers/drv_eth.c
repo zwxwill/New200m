@@ -48,6 +48,8 @@ ALIGN(ENET_BUFF_ALIGNMENT) rt_uint8_t g_rxDataBuff[ENET_RXBD_NUM][RT_ALIGN(ENET_
     #define ENET_ATONEGOTIATION_TIMEOUT     (0xFFFU)
 #endif
 
+//#define ETH_TX_DUMP
+
 struct rt_imxrt_eth
 {
     /* inherit from ethernet device */
@@ -324,7 +326,42 @@ static rt_err_t rt_imxrt_eth_control(rt_device_t dev, int cmd, void *args)
     return RT_EOK;
 }
 
+#if defined(ETH_RX_DUMP) ||  defined(ETH_TX_DUMP)
+static void packet_dump(const char *msg, const struct pbuf *p)
+{
+    const struct pbuf *q;
+    rt_uint32_t i, j;
+    rt_uint8_t *ptr;
 
+    rt_kprintf("%s %d byte\n", msg, p->tot_len);
+
+    i = 0;
+    for (q = p; q != RT_NULL; q = q->next)
+    {
+        ptr = q->payload;
+
+        for (j = 0; j < q->len; j++)
+        {
+            if ((i % 8) == 0)
+            {
+                rt_kprintf("  ");
+            }
+            if ((i % 16) == 0)
+            {
+                rt_kprintf("\r\n");
+            }
+            rt_kprintf("%02x ", *ptr);
+
+            i++;
+            ptr++;
+        }
+    }
+
+    rt_kprintf("\n\n");
+}
+#endif
+
+extern status_t _ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *data, uint32_t length);
 /* transmit packet. */
 static rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
 {
@@ -342,7 +379,7 @@ static rt_err_t rt_imxrt_eth_tx(rt_device_t dev, struct pbuf *p)
 	
 	do
 	{
-		result = ENET_SendFrame(imxrt_eth_device.enet_base, enet_handle, (const uint8_t *)(p->payload), p->tot_len);
+		result = rt_ENET_SendFrame(imxrt_eth_device.enet_base, enet_handle, (const uint8_t *)(p), p->tot_len);
 
 		if (result == kStatus_ENET_TxFrameBusy)
 		{
@@ -403,7 +440,7 @@ struct pbuf *rt_imxrt_eth_rx(rt_device_t dev)
             /* Update the received buffer when error happened. */
             if (status == kStatus_ENET_RxFrameError)
             {
-				LOG_W("ENET_GetRxFrameSize: kStatus_ENET_RxFrameError");
+				LOG_W("ENET_GetRxFrameSize: kStatus_ENET_RxFrameError\n");
 				/* Update the received buffer when error happened. */
 				/* Get the error information of the received g_frame. */
 				ENET_GetRxErrBeforeReadFrame(enet_handle, error_statistic);

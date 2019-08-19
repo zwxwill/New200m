@@ -119,7 +119,7 @@ int sal_init(void)
     /* create sal socket lock */
     rt_mutex_init(&sal_core_lock, "sal_lock", RT_IPC_FLAG_FIFO);
 
-    LOG_I("Socket Abstraction Layer initialize success.");
+    LOG_I("Socket Abstraction Layer initialize success.\n");
     init_ok = RT_TRUE;
 
     return 0;
@@ -241,12 +241,12 @@ static void check_netdev_internet_up_work(struct rt_work *work, void *work_data)
 __exit:
     if (result > 0)
     {
-        LOG_D("Set network interface device(%s) internet status up.", netdev->name);
+        LOG_D("Set network interface device(%s) internet status up.\n", netdev->name);
         netdev->flags |= NETDEV_FLAG_INTERNET_UP;       
     }
     else
     {
-        LOG_D("Set network interface device(%s) internet status down.", netdev->name);
+        LOG_D("Set network interface device(%s) internet status down.\n", netdev->name);
         netdev->flags &= ~NETDEV_FLAG_INTERNET_UP;
     }
 
@@ -271,7 +271,7 @@ int sal_check_netdev_internet_up(struct netdev *netdev)
     net_work = (struct rt_delayed_work *)rt_calloc(1, sizeof(struct rt_delayed_work));
     if (net_work == RT_NULL)
     {
-        LOG_W("No memory for network interface device(%s) delay work.", netdev->name);
+        LOG_W("No memory for network interface device(%s) delay work.\n", netdev->name);
         return -1;
     }
 

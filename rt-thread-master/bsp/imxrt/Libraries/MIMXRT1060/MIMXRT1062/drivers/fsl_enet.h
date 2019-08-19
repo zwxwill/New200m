@@ -1214,7 +1214,7 @@ status_t ENET_ReadFrame(ENET_Type *base, enet_handle_t *handle, uint8_t *data, u
  *         kStatus_ENET_TxFrameBusy.
  */
 status_t ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *data, uint32_t length);
-
+status_t rt_ENET_SendFrame(ENET_Type *base, enet_handle_t *handle, const uint8_t *data, uint32_t length);
 #if FSL_FEATURE_ENET_QUEUE > 1
 /*!
  * @brief Gets the error statistics of received frame for extended multi-ring.
